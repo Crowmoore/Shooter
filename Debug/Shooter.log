@@ -1,0 +1,34 @@
+﻿Build started 16.10.2015 12:26:36.
+     1>Project "E:\Koulu\Olio 2\SFML\Shooter\Shooter\Shooter.vcxproj" on node 2 (Build target(s)).
+     1>ClCompile:
+         E:\Visual Studio\VC\bin\CL.exe /c /I"E:\SFML-Visual_Studio2015RCx32\include" /ZI /nologo /W3 /WX- /sdl /Od /Oy- /D _MBCS /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"Debug\\" /Fd"Debug\vc140.pdb" /Gd /TP /analyze- /errorReport:prompt Source.cpp
+         Source.cpp
+     1>e:\koulu\olio 2\sfml\shooter\shooter\source.cpp(47): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
+     1>e:\koulu\olio 2\sfml\shooter\shooter\source.cpp(105): warning C4305: 'argument': truncation from 'double' to 'float'
+     1>e:\koulu\olio 2\sfml\shooter\shooter\source.cpp(106): warning C4244: 'argument': conversion from 'const int' to 'float', possible loss of data
+     1>e:\koulu\olio 2\sfml\shooter\shooter\source.cpp(110): warning C4305: 'argument': truncation from 'double' to 'float'
+     1>e:\koulu\olio 2\sfml\shooter\shooter\source.cpp(111): warning C4244: 'argument': conversion from 'const int' to 'float', possible loss of data
+     1>e:\koulu\olio 2\sfml\shooter\shooter\source.cpp(229): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+     1>e:\koulu\olio 2\sfml\shooter\shooter\source.cpp(248): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+     1>e:\koulu\olio 2\sfml\shooter\shooter\source.cpp(269): warning C4018: '<': signed/unsigned mismatch
+     1>e:\koulu\olio 2\sfml\shooter\shooter\source.cpp(280): warning C4244: '-=': conversion from 'float' to 'int', possible loss of data
+     1>e:\koulu\olio 2\sfml\shooter\shooter\source.cpp(290): warning C4018: '<': signed/unsigned mismatch
+     1>e:\koulu\olio 2\sfml\shooter\shooter\source.cpp(300): warning C4018: '<': signed/unsigned mismatch
+     1>e:\koulu\olio 2\sfml\shooter\shooter\source.cpp(352): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+     1>e:\koulu\olio 2\sfml\shooter\shooter\source.cpp(357): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+     1>e:\koulu\olio 2\sfml\shooter\shooter\source.cpp(362): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+     1>e:\koulu\olio 2\sfml\shooter\shooter\source.cpp(367): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+       Link:
+         E:\Visual Studio\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"E:\Koulu\Olio 2\SFML\Shooter\Debug\Shooter.exe" /INCREMENTAL /NOLOGO /LIBPATH:"E:\SFML-Visual_Studio2015RCx32\lib" "sfml-graphics-d.lib" "sfml-audio-d.lib" "sfml-window-d.lib" "sfml-system-d.lib" kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /Debug /PDB:"E:\Koulu\Olio 2\SFML\Shooter\Debug\Shooter.pdb" /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"E:\Koulu\Olio 2\SFML\Shooter\Debug\Shooter.lib" /MACHINE:X86 Debug\Ammunition.obj
+         Debug\Boss.obj
+         Debug\Enemy.obj
+         Debug\GameState.obj
+         Debug\Logics.obj
+         Debug\Player.obj
+         Debug\Source.obj
+         Shooter.vcxproj -> E:\Koulu\Olio 2\SFML\Shooter\Debug\Shooter.exe
+     1>Done Building Project "E:\Koulu\Olio 2\SFML\Shooter\Shooter\Shooter.vcxproj" (Build target(s)).
+
+Build succeeded.
+
+Time Elapsed 00:00:01.11
