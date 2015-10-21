@@ -2,15 +2,14 @@
 #include <SFML\Graphics.hpp>
 #include <string>
 #include <iostream>
-#include "Player.h"
 
 using namespace std;
 
-class Ammunition : public sf::RectangleShape {
+class Bullet : public sf::RectangleShape {
 public:
-	Ammunition();
-	~Ammunition();
-	Ammunition(sf::Vector2f, sf::Vector2f, sf::Color, string);
+	Bullet();
+	~Bullet();
+	Bullet(sf::Vector2f, sf::Vector2f, sf::Color, string);
 
 	void calculateDirection(sf::RenderWindow &);
 	void calculateRotation(sf::RenderWindow &);

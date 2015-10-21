@@ -3,7 +3,7 @@
 #include <iostream>
 #include <string>
 #include "Player.h"
-#include "Ammunition.h"
+#include "Bullet.h"
 
 using namespace std;
 
@@ -14,9 +14,8 @@ public:
 	Enemy(string, sf::Texture *, sf::Vector2f);
 	void draw(sf::RenderWindow &);
 	float calculateRotation(sf::RenderWindow &, Player &);
-	//float calculateDistance(sf::RenderWindow &, Player &);
 	void resolveCollisions(vector <Enemy> &, Player &);
-	void updateEnemies(sf::RenderWindow &, Player &, vector<Enemy> &, vector<Ammunition> &);
+	void updateEnemies(sf::RenderWindow &, Player &, vector<Enemy> &, vector<Bullet> &);
 
 	int score;
 	float health;

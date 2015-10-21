@@ -1,46 +1,46 @@
 #include <SFML\Graphics.hpp>
 #include <SFML\Audio.hpp>
+#include "Bullet.h"
 #include "Player.h"
 #include <iostream>
 #include <math.h>
 #include "WorldPosition.h"
-#include "Ammunition.h"
 #include <vector>
 #include "Enemy.h"
 #include "Boss.h"
 #include "GameState.h"
 #include "Logics.h"
+#include "Loader.h"
 #include <stdlib.h>
 
 using namespace std;
 
-sf::RenderWindow window(sf::VideoMode::getDesktopMode(), "Tear", sf::Style::Fullscreen);
+sf::RenderWindow window(sf::VideoMode::getDesktopMode(), "Tear");
 sf::View view(sf::FloatRect(0, 0, 1920, 1080));
 sf::Texture playerTex;
+sf::Texture shieldTex;
 sf::Texture enemyTex;
 sf::Texture bossTex;
-Player player("assets/pics/ship.png", &playerTex);
-Logics logics;
+Player player("assets/pics/ship.png", &playerTex, &shieldTex);
+vector <Bullet> bullets;
+vector <Enemy> enemies;
 Enemy enemy;
+Loader loader;
+Logics logics;
 GameState gameState;
 sf::Sprite bgSprite;
 sf::Sprite shield;
-vector <Ammunition> bullets;
-vector <Ammunition> enemyBullets;
-vector <Enemy> enemies;
-void checkEnemyCollision();
+
 sf::FloatRect getViewBounds(const sf::View &);
 sf::FloatRect bounds;
 void spawnEnemies(int);
 void enemyWaves(int);
-void updateEnemies(sf::RenderWindow &, Player);
 void drawHUD(sf::Font, int);
 sf::Text bossWarning;
 Boss boss("assets/pics/boss.png", &bossTex, sf::Vector2f(2000, 0));
 sf::RectangleShape meterBlue;
 sf::RectangleShape meterBlack;
 sf::RectangleShape bossHealth;
-sf::CircleShape explosion;
 
 int main()
 {
@@ -48,54 +48,42 @@ int main()
 
 	int cannonFire = 0;
 
-	sf::Music music;
-	if (!music.openFromFile("assets/sounds/Hall_of_the_Mountain_King.ogg")) {
-		cout << "Could not open assets/sounds/Hall_of_the_Mountain_King.ogg" << endl;
-	}
-	music.setVolume(50);
-	music.play();
+	loader.loadMusic("assets/sounds/Hall_of_the_Mountain_King.ogg");
+
+	sf::SoundBuffer laserBuffer;
+	sf::SoundBuffer explosionBuffer;
+	sf::SoundBuffer heartBuffer;
+	explosionBuffer.loadFromFile("assets/sounds/explosion.wav");
+	laserBuffer.loadFromFile("assets/sounds/laser.wav");
+	heartBuffer.loadFromFile("assets/sounds/heartbeat.wav");
+	
+	sf::Sound laser;
+	sf::Sound explosion;
+	sf::Sound heartbeat;
+	
+	explosion.setBuffer(explosionBuffer);
+	explosion.setVolume(40);
+	laser.setBuffer(laserBuffer);
+	laser.setVolume(10);
+	heartbeat.setBuffer(heartBuffer);
+	heartbeat.setVolume(70);
 
 	bossWarning.setPosition(2000, 800);
-	sf::Clock warningTimer;
 	sf::Clock enemySpawnTimer;
 	sf::Clock waveTimer;
 	int enemySpawnInterval = 3;
 
 	int waveInterval = 19;
 	int waveCount = 1;
-	sf::Font font;
-
-	explosion.setRadius(25);
-	explosion.setFillColor(sf::Color(255, 128, 0, 200));
-
-	if (!font.loadFromFile("assets/fonts/tahoma.ttf")) {
-		cout << "Could not load font: assets/fonts/tahoma.ttf" << endl;
-	}
+	sf::Font font(loader.loadFont("assets/fonts/tahoma.ttf"));
 
 	window.setFramerateLimit(60);
 
 	bounds = getViewBounds(view);
 
-	sf::Image bg;
-	if (!bg.loadFromFile("assets/pics/bg_space.jpg")) {
-		cout << "Could not open image: assets/pics/bg_space.jpg" << endl;
-		return -1;
-	}
-	else {
-		bg.loadFromFile("assets/pics/bg_space.jpg");
-	}
-	sf::Texture bgTex;
-	bgTex.loadFromImage(bg);
+	sf::Texture bgTex(loader.loadTexture("assets/pics/bg_space.jpg"));
 	bgSprite.setTexture(bgTex);
 	bgSprite.setPosition(0, 0);
-
-	sf::Image shieldImg;
-	shieldImg.loadFromFile("assets/pics/shield.png");
-	sf::Texture shieldTex;
-	shieldTex.loadFromImage(shieldImg);
-	shieldTex.setSmooth(true);
-	shield.setTexture(shieldTex);
-	shield.setScale(sf::Vector2f(1.5, 1.5));
 
 	sf::Texture hardpointTex;
 	hardpointTex.loadFromFile("assets/pics/cannonsheet.png");
@@ -115,6 +103,8 @@ int main()
 
 	while (window.isOpen())
 	{
+		
+
 		player.adjustVelocity();
 		player.isShielded = false;
 
@@ -131,53 +121,32 @@ int main()
 
 			}
 		
-		player.checkBounds(player, bounds.top, bounds.width, bounds.height, bounds.left);
-
-			if (sf::Keyboard::isKeyPressed(sf::Keyboard::W) && player.getPosition().y > bounds.top + player.getSize().x) {
-				player.velocity.y -= player.acceleration;
-			}
-			else if (sf::Keyboard::isKeyPressed(sf::Keyboard::D) && player.getPosition().x < bounds.width - player.getSize().x) {
-				player.velocity.x += player.acceleration;
-			}
-			else if (sf::Keyboard::isKeyPressed(sf::Keyboard::S) && player.getPosition().y < bounds.height - player.getSize().x) {
-				player.velocity.y += player.acceleration;
-			}
-			else if (sf::Keyboard::isKeyPressed(sf::Keyboard::A) && player.getPosition().x > bounds.left + player.getSize().x) {
-				player.velocity.x -= player.acceleration;
-			}
+		
 
 			window.clear();
 			window.setView(view);
 
 			if (gameState.getGameState() == 1) {
-				
+
 				window.draw(bgSprite);
+
+
+				player.checkBounds(player, bounds.top, bounds.width, bounds.height, bounds.left);
+				player.updatePlayer(player, bounds.top, bounds.width, bounds.height, bounds.left);
 				player.setPosition(player.getPosition() + player.velocity);
 				player.lookAtCursor(window, view);
+				player.checkHealth(heartbeat);
 				player.draw(window);
 
 			if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
-				Ammunition ammo(player.getPosition(), (sf::Vector2f(sf::Mouse::getPosition())), sf::Color::Red, "player");
-				ammo.damage = player.damage;
-				ammo.velocity = sf::Vector2f(12, 12);
-				ammo.calculateRotation(window);
-				ammo.calculateDirection(window);
-				bullets.push_back(ammo);
+				player.shoot(window, bullets, laser);
 			}
 			if (sf::Mouse::isButtonPressed(sf::Mouse::Right)) {
-				shield.setPosition(player.getPosition().x - 37, player.getPosition().y - 37);
-				shield.setColor(sf::Color(51, 153, 255, 128));
-				if (player.shieldCharge > 0) {
-					player.shieldCharge -= 0.5;
-					player.isShielded = true;
-					window.draw(shield);
-				}
-				else {
-					player.shieldCharge = 0;
-					player.isShielded = false;
-				}
+				player.activateShield(window);
 
 			}
+			
+
 
 			enemy.updateEnemies(window, player, enemies, bullets);
 
@@ -228,7 +197,7 @@ int main()
 					}
 					hardpoint2.setTextureRect(sf::IntRect(0, cannonFire * 195.5, 1000, 200));
 					
-					Ammunition ammo(point, player.getPosition(), sf::Color::Yellow, "enemy");
+					Bullet ammo(point, player.getPosition(), sf::Color::Yellow, "enemy");
 					ammo.velocity = sf::Vector2f(8, 8);
 
 					ammo.damage = boss.damage;
@@ -246,7 +215,7 @@ int main()
 						point = sf::Vector2f(hardpoint1.getGlobalBounds().left, hardpoint1.getGlobalBounds().top + hardpoint1.getGlobalBounds().height - 20);
 					}
 					hardpoint1.setTextureRect(sf::IntRect(0, cannonFire * 195.5, 1000, 200));
-					Ammunition ammo(point, player.getPosition(), sf::Color::Yellow, "enemy");
+					Bullet ammo(point, player.getPosition(), sf::Color::Yellow, "enemy");
 					ammo.velocity = sf::Vector2f(8, 8);
 
 					ammo.damage = boss.damage;
@@ -266,62 +235,27 @@ int main()
 
 			
 			if (bullets.size() != 0) {
+				logics.resolveBulletHitsOnPlayer(window, bullets, player);
+				logics.destroyOutOfBoundsBullets(bullets, bounds.top, bounds.width, bounds.height, bounds.left);
+				logics.resolveBulletHitsOnEnemy(bullets, enemies, player, explosion);
 				for (int bullet = 0; bullet < bullets.size(); bullet++) {
-					bullets[bullet].setPosition(bullets[bullet].getPosition() + bullets[bullet].velocity);
-					bullets[bullet].draw(window);
-					if (bullets[bullet].getPosition().x < bounds.left
-						|| bullets[bullet].getPosition().x > bounds.width 
-						|| bullets[bullet].getPosition().y < bounds.top 
-						|| bullets[bullet].getPosition().y > bounds.height) {
+					if (bullets[bullet].id == "player" && bullets[bullet].getGlobalBounds().intersects(hardpoint1.getGlobalBounds()) && boss.encounterHasStarted == true
+						|| bullets[bullet].id == "player" && bullets[bullet].getGlobalBounds().intersects(hardpoint2.getGlobalBounds()) && boss.encounterHasStarted == true) {
+						boss.health -= bullets[bullet].damage;
 						bullets.erase(bullets.begin() + bullet);
-					}
-					else if (bullets[bullet].id == "enemy" && bullets[bullet].getGlobalBounds().intersects(player.getGlobalBounds())) {
-						if(player.isShielded != true) {
-							player.health -= bullets[bullet].damage;
-						}
-						else {
-							shield.setColor(sf::Color(255, 255, 255, 128));
-							window.draw(shield);
-						}
-						bullets.erase(bullets.begin() + bullet);
-					}
-				}
-				if (bullets.size() != 0) {
-					for (int bullet = 0; bullet < bullets.size(); bullet++) {
-						if (bullets[bullet].id == "player" && bullets[bullet].getGlobalBounds().intersects(hardpoint1.getGlobalBounds()) && boss.encounterHasStarted == true
-							|| bullets[bullet].id == "player" && bullets[bullet].getGlobalBounds().intersects(hardpoint2.getGlobalBounds()) && boss.encounterHasStarted == true) {
-							boss.health -= bullets[bullet].damage;
-							bullets.erase(bullets.begin() + bullet);
-							if (boss.health <= 0) {
-								boss.health = 0;
-								player.score += boss.score;
-							}
-						}
-						for (int enemy = 0; enemy < enemies.size(); enemy++) {
-							if (bullets[bullet].id == "player" && bullets[bullet].getGlobalBounds().intersects(enemies[enemy].getGlobalBounds())) {
-								enemies[enemy].health -= bullets[bullet].damage;
-								bullets.erase(bullets.begin() + bullet);
-								break;
-							}
-							if (enemies[enemy].health <= 0) {
-								player.score += enemies[enemy].score;
-								explosion.setPosition(enemies[enemy].getPosition().x - 16, enemies[enemy].getPosition().y - 16);
-								window.draw(explosion);
-								enemies.erase(enemies.begin() + enemy);
-							}
+						if (boss.health <= 0) {
+							boss.health = 0;
+							player.score += boss.score;
 							
-						}
 					}
-
 				}
-			}
 
+			}
 		}
+
+	}
+	
 		
-		/*if (player.health <= 0) {
-			player.alive = false;
-			gameState.setGameState(0);
-		}*/
 
 
 		if (waveCount >= 5 && bossWarning.getPosition().x > -1100) {
@@ -424,19 +358,7 @@ void drawHUD(sf::Font font, int waveCount) {
 	shieldCharge.setColor(sf::Color::White);
 	window.draw(shieldCharge);
 
-	meterBlack.setSize(sf::Vector2f(200, 20));
-	meterBlack.setPosition(220, bounds.height - 190);
-	meterBlack.setOutlineThickness(1);
-	meterBlack.setOutlineColor(sf::Color::White);
-	meterBlack.setFillColor(sf::Color::Black);
-	window.draw(meterBlack);
-
-	meterBlue.setSize(sf::Vector2f(player.getShieldCharge(), 20));
-	meterBlue.setPosition(220, bounds.height - 190);
-	meterBlue.setOutlineThickness(1);
-	meterBlue.setOutlineColor(sf::Color::White);
-	meterBlue.setFillColor(sf::Color(51, 153, 255, 255));
-	window.draw(meterBlue);
+	player.drawShieldMeter(window);
 
 	if (waveCount < 5) {
 		sf::Text wave("Wave " + to_string(waveCount), font);
@@ -444,6 +366,14 @@ void drawHUD(sf::Font font, int waveCount) {
 		wave.setColor(sf::Color::White);
 		wave.setCharacterSize(45);
 		window.draw(wave);
+	}
+	if (player.health <= 0) {
+		sf::Text death("You have died", font);
+		death.setColor(sf::Color::White);
+		death.setStyle(sf::Text::Bold);
+		death.setCharacterSize(60);
+		death.setPosition(bounds.width / 2 - death.getLocalBounds().width / 2, bounds.height / 2 - death.getLocalBounds().height / 2);
+		window.draw(death);
 	}
 	
 }

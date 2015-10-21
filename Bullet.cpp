@@ -1,10 +1,10 @@
-#include "Ammunition.h"
+#include "Bullet.h"
 
 
 
-Ammunition::Ammunition() {}
-Ammunition::~Ammunition() {}
-Ammunition::Ammunition(sf::Vector2f spawnPosition, sf::Vector2f targetPosition, sf::Color color, string id) {
+Bullet::Bullet() {}
+Bullet::~Bullet() {}
+Bullet::Bullet(sf::Vector2f spawnPosition, sf::Vector2f targetPosition, sf::Color color, string id) {
 	/*sf::Image image;
 	sf::Texture tex;
 	if (!image.loadFromFile(pathName)) {
@@ -23,10 +23,10 @@ Ammunition::Ammunition(sf::Vector2f spawnPosition, sf::Vector2f targetPosition, 
 	this->velocity = sf::Vector2f(5.f ,5.f);
 	this->damage = 0.f;
 }
-void Ammunition::draw(sf::RenderWindow &window) {
+void Bullet::draw(sf::RenderWindow &window) {
 	window.draw(*this);
 }
-void Ammunition::calculateRotation(sf::RenderWindow &window) {
+void Bullet::calculateRotation(sf::RenderWindow &window) {
 	sf::Vector2f currentPosition = this->getPosition();
 	sf::Vector2f targetPosition = this->target;
 	//cursorPosition = sf::Vector2i(window.mapPixelToCoords(cursorPosition, view));
@@ -39,7 +39,7 @@ void Ammunition::calculateRotation(sf::RenderWindow &window) {
 	
 	this->setRotation(rotation + 90);
 }
-void Ammunition::calculateDirection(sf::RenderWindow &window) {
+void Bullet::calculateDirection(sf::RenderWindow &window) {
 	sf::Vector2f currentPosition = this->getPosition();
 	sf::Vector2f targetPosition = target;
 

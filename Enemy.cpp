@@ -39,30 +39,21 @@ float Enemy::calculateRotation(sf::RenderWindow &window, Player &player) {
 	this->setRotation(degrees + 90);
 	return radians;
 }
-/*float Enemy::calculateDistance(sf::RenderWindow &window, Player &player) {
-	sf::Vector2f currentPosition = this->getPosition();
-	sf::Vector2f playerPosition = player.getPosition();
-
-	float distance = sqrt(((playerPosition.x - currentPosition.x) * (playerPosition.x - currentPosition.x) + (playerPosition.y - currentPosition.y) * (playerPosition.y - currentPosition.y)));
-	this->velocity.x = this->velocity.x * (playerPosition.x - currentPosition.x) / distance;
-	this->velocity.y = this->velocity.y * (playerPosition.y - currentPosition.y) / distance;
-	return distance;
-}*/
 
 void Enemy::resolveCollisions(vector <Enemy> &enemies, Player &player) {
 	for (int i = 0; i < enemies.size(); i++) {
 		if (player.getGlobalBounds().intersects(enemies[i].getGlobalBounds())) {
-			enemies[i].move((enemies[i].getSize().x / 8) - (player.getOrigin().x / 64), (enemies[i].getSize().y / 8) - (player.getOrigin().y / 64));
+			enemies[i].move((enemies[i].getPosition().x / 32) - (player.getPosition().x / 32), (enemies[i].getPosition().y / 32) - (player.getPosition().y / 32));
 		}
 		for (int j = i + 1; j < enemies.size(); j++) {
 			if (enemies[i].getGlobalBounds().intersects(enemies[j].getGlobalBounds())) {
-				enemies[i].move((enemies[i].getSize().x / 16) - (enemies[j].getOrigin().x / 32), (enemies[i].getSize().y / 16) - (enemies[j].getOrigin().y / 32));
+				enemies[i].move((enemies[i].getPosition().x / 32) - (enemies[j].getPosition().x / 32), (enemies[i].getPosition().y / 32) - (enemies[j].getPosition().y / 32));
 			}
 
 		}
 	}
 }
-void Enemy::updateEnemies(sf::RenderWindow &window, Player &player, vector<Enemy> &enemies, vector<Ammunition> &bullets) {
+void Enemy::updateEnemies(sf::RenderWindow &window, Player &player, vector<Enemy> &enemies, vector<Bullet> &bullets) {
 	for (int i = 0; i < enemies.size(); i++) {
 		enemies[i].calculateRotation(window, player);
 		enemies[i].setPosition(enemies[i].getPosition() + sf::Vector2f(cos(enemies[i].calculateRotation(window, player)) * enemies[i].velocity.x, sin(enemies[i].calculateRotation(window, player)) * enemies[i].velocity.y));
@@ -70,7 +61,7 @@ void Enemy::updateEnemies(sf::RenderWindow &window, Player &player, vector<Enemy
 		int random = rand() % 50 + 1;
 		enemies[i].draw(window);
 		if (random == 1) {
-			Ammunition ammo(enemies[i].getPosition(), player.getPosition(), sf::Color::Green, "enemy");
+			Bullet ammo(enemies[i].getPosition(), player.getPosition(), sf::Color::Green, "enemy");
 			ammo.velocity = sf::Vector2f(8, 8);
 			ammo.setSize(sf::Vector2f(6, 13));
 			ammo.damage = enemies[i].damage;
