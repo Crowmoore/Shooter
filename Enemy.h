@@ -12,13 +12,13 @@ public:
 	Enemy();
 	~Enemy();
 	Enemy(string, sf::Texture *, sf::Vector2f);
-	void draw(sf::RenderWindow &);
-	float calculateRotation(sf::RenderWindow &, Player &);
-	void resolveCollisions(vector <Enemy> &, Player &);
-	void updateEnemies(sf::RenderWindow &, Player &, vector<Enemy> &, vector<Bullet> &);
+	virtual float calculateRotation(sf::RenderWindow &, Player &) = 0;
+	virtual void shoot(sf::RenderWindow &, Player &, vector <Enemy *> &, vector <Bullet> &) = 0;
+	void draw(sf::RenderWindow &window);
 
 	int score;
 	float health;
 	float damage;
+	bool hasRockets;
 	sf::Vector2f velocity;
 };

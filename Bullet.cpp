@@ -26,22 +26,22 @@ Bullet::Bullet(sf::Vector2f spawnPosition, sf::Vector2f targetPosition, sf::Colo
 void Bullet::draw(sf::RenderWindow &window) {
 	window.draw(*this);
 }
-void Bullet::calculateRotation(sf::RenderWindow &window) {
+float Bullet::calculateRotation(sf::RenderWindow &window) {
 	sf::Vector2f currentPosition = this->getPosition();
 	sf::Vector2f targetPosition = this->target;
-	//cursorPosition = sf::Vector2i(window.mapPixelToCoords(cursorPosition, view));
 	const float pi = 3.14159265;
 
 	float dx = targetPosition.x - currentPosition.x;
 	float dy = targetPosition.y - currentPosition.y;
 
-	float rotation = (atan2(dy, dx)) * 180.0 / pi;
-	
-	this->setRotation(rotation + 90);
+	float degrees = (atan2(dy, dx)) * 180.0 / pi;
+	float radians = (atan2(dy, dx));
+	this->setRotation(degrees + 90);
+	return radians;
 }
 void Bullet::calculateDirection(sf::RenderWindow &window) {
 	sf::Vector2f currentPosition = this->getPosition();
-	sf::Vector2f targetPosition = target;
+	sf::Vector2f targetPosition = this->target;
 
 	float distance = sqrt(((targetPosition.x - currentPosition.x) * (targetPosition.x - currentPosition.x) + (targetPosition.y - currentPosition.y) * (targetPosition.y - currentPosition.y)));
 	this->velocity.x = this->velocity.x * (targetPosition.x - currentPosition.x) / distance;

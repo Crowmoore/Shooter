@@ -5,6 +5,7 @@
 #include "Bullet.h"
 #include "SFML\Audio.hpp"
 #include <vector>
+#include "Powerups.h"
 
 
 using namespace std;
@@ -14,8 +15,11 @@ public:
 	Logics();
 	~Logics();
 	
-	void destroyOutOfBoundsBullets(vector <Bullet> &, float, float, float, float);
+	void destroyOutOfBoundsBullets(vector <Bullet> &, sf::FloatRect);
 	void resolveBulletHitsOnPlayer(sf::RenderWindow &, vector <Bullet> &, Player &);
-	void resolveBulletHitsOnEnemy(vector <Bullet> &, vector <Enemy> &, Player &, sf::Sound &);
-	//void resolveCollision(vector <Enemy> &, Player &);
+	void resolveBulletHitsOnEnemy(vector <Bullet> &, vector <Enemy *> &, Player &, sf::Sound &, vector <Powerups *> &);
+	void resolveCollisions(vector <Enemy *> &, Player &);
+	void updateEnemies(sf::RenderWindow &, Player &, vector<Enemy *> &, vector<Bullet> &);
+	void updatePowerups(sf::RenderWindow &, vector <Powerups *> &, Player &, sf::Sound &);
+	Powerups* spawnRandomPowerUp();
 };

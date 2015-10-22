@@ -12,7 +12,7 @@ public:
 	Bullet(sf::Vector2f, sf::Vector2f, sf::Color, string);
 
 	void calculateDirection(sf::RenderWindow &);
-	void calculateRotation(sf::RenderWindow &);
+	float calculateRotation(sf::RenderWindow &);
 	void draw(sf::RenderWindow &);
 	float damage;
 	float rateOfFire;

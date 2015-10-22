@@ -125,23 +125,26 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Bullet.cpp" />
-    <ClCompile Include="Boss.cpp" />
+    <ClCompile Include="Drone.cpp" />
     <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="GameState.cpp" />
     <ClCompile Include="Loader.cpp" />
     <ClCompile Include="Logics.cpp" />
+    <ClCompile Include="Marauder.cpp" />
     <ClCompile Include="Player.cpp" />
+    <ClCompile Include="Powerups.cpp" />
     <ClCompile Include="Source.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Bullet.h" />
-    <ClInclude Include="Boss.h" />
+    <ClInclude Include="Drone.h" />
     <ClInclude Include="Enemy.h" />
     <ClInclude Include="GameState.h" />
     <ClInclude Include="Loader.h" />
     <ClInclude Include="Logics.h" />
+    <ClInclude Include="Marauder.h" />
     <ClInclude Include="Player.h" />
-    <ClInclude Include="WorldPosition.h" />
+    <ClInclude Include="Powerups.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

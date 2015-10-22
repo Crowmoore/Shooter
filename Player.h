@@ -14,14 +14,13 @@ class Player : public sf::RectangleShape {
 public:
 	Player();
 	~Player();
-	Player(string, sf::Texture *, sf::Texture *);
 
 	void draw(sf::RenderWindow &);
 	void lookAtCursor(sf::RenderWindow &, sf::View &);
 	void adjustVelocity();
 	void setAmmoDescription(string);
-	void checkBounds(Player &, float, float, float, float);
-	void updatePlayer(Player &, float, float, float, float);
+	void checkBounds(Player &, sf::FloatRect);
+	void update(sf::RenderWindow &, vector <Bullet> &, sf::Sound &, sf::FloatRect, sf::Clock &);
 	void shoot(sf::RenderWindow &, vector <Bullet> &, sf::Sound &);
 	void activateShield(sf::RenderWindow &);
 	void checkHealth(sf::Sound &);
@@ -34,12 +33,16 @@ public:
 	sf::RectangleShape shieldMeterBlack;
 	int health;
 	int score;
+	sf::Texture shieldTex;
+	sf::Texture tex;
+	float rateOfFire;
 	float shieldCharge;
 	sf::Sound heartbeat;
 	string ammoDescription;
 	float damage;
 	bool isShielded;
 	bool alive;
+	int pointMultiplier;
 	bool isDying;
 	sf::Sprite shield;
 	float acceleration;
