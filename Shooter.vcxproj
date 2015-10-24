@@ -139,12 +139,20 @@
     <ClInclude Include="Bullet.h" />
     <ClInclude Include="Drone.h" />
     <ClInclude Include="Enemy.h" />
+    <ClInclude Include="GameScreens.h" />
     <ClInclude Include="GameState.h" />
+    <ClInclude Include="Globals.h" />
+    <ClInclude Include="Level1.h" />
     <ClInclude Include="Loader.h" />
     <ClInclude Include="Logics.h" />
     <ClInclude Include="Marauder.h" />
+    <ClInclude Include="MenuScreen.h" />
+    <ClInclude Include="OptionsScreen.h" />
+    <ClInclude Include="PauseScreen.h" />
     <ClInclude Include="Player.h" />
+    <ClInclude Include="PointsScreen.h" />
     <ClInclude Include="Powerups.h" />
+    <ClInclude Include="Screen.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -7,7 +7,6 @@
 #include <math.h>
 #include <vector>
 
-
 using namespace std;
 
 class Player : public sf::RectangleShape {

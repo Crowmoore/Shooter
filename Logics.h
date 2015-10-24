@@ -7,7 +7,6 @@
 #include <vector>
 #include "Powerups.h"
 
-
 using namespace std;
 
 class Logics {
@@ -22,4 +21,6 @@ public:
 	void updateEnemies(sf::RenderWindow &, Player &, vector<Enemy *> &, vector<Bullet> &);
 	void updatePowerups(sf::RenderWindow &, vector <Powerups *> &, Player &, sf::Sound &);
 	Powerups* spawnRandomPowerUp();
+	
+
 };

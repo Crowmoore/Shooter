@@ -9,12 +9,12 @@ Player::Player() {
 	this->setTexture(&tex);
 
 	this->shieldMeterBlack.setSize(sf::Vector2f(200, 20));
-	this->shieldMeterBlack.setPosition(220, 890);
+	this->shieldMeterBlack.setPosition(350, 890);
 	this->shieldMeterBlack.setOutlineThickness(1);
 	this->shieldMeterBlack.setOutlineColor(sf::Color::White);
 	this->shieldMeterBlack.setFillColor(sf::Color::Black);
 	
-	this->shieldMeterBlue.setPosition(220, 890);
+	this->shieldMeterBlue.setPosition(350, 890);
 	this->shieldMeterBlue.setOutlineThickness(1);
 	this->shieldMeterBlue.setOutlineColor(sf::Color::White);
 	this->shieldMeterBlue.setFillColor(sf::Color(51, 153, 255, 255));

@@ -59,7 +59,10 @@ void Logics::resolveBulletHitsOnEnemy(vector <Bullet> &bullets, vector <Enemy *>
 				break;
 			}
 			if (enemies[enemy]->health <= 0) {
-				player.score += enemies[enemy]->score * player.pointMultiplier;
+				extern int points;
+				points += enemies[enemy]->score * player.pointMultiplier;
+				extern int enemiesKilled;
+				enemiesKilled++;
 				explosion.play();
 				int random = rand() % 10 + 1;
 				if (random == 1) {

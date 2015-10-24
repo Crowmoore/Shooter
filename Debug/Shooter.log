@@ -1,16 +1,17 @@
-﻿Build started 22.10.2015 17:25:24.
+﻿Build started 24.10.2015 20:22:10.
      1>Project "E:\Koulu\Olio 2\SFML\Shooter\Shooter\Shooter.vcxproj" on node 2 (Build target(s)).
      1>ClCompile:
-         E:\Visual Studio\VC\bin\CL.exe /c /I"E:\SFML-Visual_Studio2015RCx32\include" /ZI /nologo /W3 /WX- /sdl /Od /Oy- /D _MBCS /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"Debug\\" /Fd"Debug\vc140.pdb" /Gd /TP /analyze- /errorReport:prompt Drone.cpp Marauder.cpp
-         Marauder.cpp
-     1>e:\koulu\olio 2\sfml\shooter\shooter\marauder.cpp(30): warning C4305: 'initializing': truncation from 'double' to 'float'
-     1>e:\koulu\olio 2\sfml\shooter\shooter\marauder.cpp(35): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-     1>e:\koulu\olio 2\sfml\shooter\shooter\marauder.cpp(42): warning C4018: '<': signed/unsigned mismatch
-         Drone.cpp
-     1>e:\koulu\olio 2\sfml\shooter\shooter\drone.cpp(30): warning C4305: 'initializing': truncation from 'double' to 'float'
-     1>e:\koulu\olio 2\sfml\shooter\shooter\drone.cpp(35): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-     1>e:\koulu\olio 2\sfml\shooter\shooter\drone.cpp(42): warning C4018: '<': signed/unsigned mismatch
-         Generating Code...
+         E:\Visual Studio\VC\bin\CL.exe /c /I"E:\SFML-Visual_Studio2015RCx32\include" /ZI /nologo /W3 /WX- /sdl /Od /Oy- /D _MBCS /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"Debug\\" /Fd"Debug\vc140.pdb" /Gd /TP /analyze- /errorReport:prompt Source.cpp
+         Source.cpp
+     1>e:\koulu\olio 2\sfml\shooter\shooter\menuscreen.h(73): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+     1>e:\koulu\olio 2\sfml\shooter\shooter\level1.h(58): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
+     1>e:\koulu\olio 2\sfml\shooter\shooter\level1.h(59): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+     1>e:\koulu\olio 2\sfml\shooter\shooter\level1.h(156): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+     1>e:\koulu\olio 2\sfml\shooter\shooter\level1.h(178): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+     1>e:\koulu\olio 2\sfml\shooter\shooter\level1.h(183): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+     1>e:\koulu\olio 2\sfml\shooter\shooter\level1.h(188): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+     1>e:\koulu\olio 2\sfml\shooter\shooter\level1.h(193): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+     1>e:\koulu\olio 2\sfml\shooter\shooter\optionsscreen.h(125): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
        Link:
          E:\Visual Studio\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"E:\Koulu\Olio 2\SFML\Shooter\Debug\Shooter.exe" /INCREMENTAL /NOLOGO /LIBPATH:"E:\SFML-Visual_Studio2015RCx32\lib" "sfml-graphics-d.lib" "sfml-audio-d.lib" "sfml-window-d.lib" "sfml-system-d.lib" kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /Debug /PDB:"E:\Koulu\Olio 2\SFML\Shooter\Debug\Shooter.pdb" /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"E:\Koulu\Olio 2\SFML\Shooter\Debug\Shooter.lib" /MACHINE:X86 Debug\Bullet.obj
          Debug\Drone.obj
@@ -27,4 +28,4 @@
 
 Build succeeded.
 
-Time Elapsed 00:00:02.59
+Time Elapsed 00:00:01.17
