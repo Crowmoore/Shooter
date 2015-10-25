@@ -5,3 +5,4 @@
 #include "PauseScreen.h"
 #include "OptionsScreen.h"
 #include "PointsScreen.h"
+#include "MissionsScreen.h"

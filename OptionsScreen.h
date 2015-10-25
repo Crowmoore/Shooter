@@ -129,21 +129,24 @@ int OptionsScreen::run(sf::RenderWindow &window) {
 		else if (selection > 2) {
 			selection = 0;
 		}
-		if (selection == 0) {
+		switch (selection) {
+		case 0:
 			volume.setColor(sf::Color(255, 0, 0, 255));
 			display.setColor(sf::Color(255, 255, 255, 255));
 			back.setColor(sf::Color(255, 255, 255, 255));
-		}
-		else if (selection == 1){
+			break;
+		case 1:
 			volume.setColor(sf::Color(255, 255, 255, 255));
 			display.setColor(sf::Color(255, 0, 0, 255));
 			back.setColor(sf::Color(255, 255, 255, 255));
-		}
-		else if (selection == 2) {
+			break;
+		case 2:
 			volume.setColor(sf::Color(255, 255, 255, 255));
 			display.setColor(sf::Color(255, 255, 255, 255));
 			back.setColor(sf::Color(255, 0, 0, 255));
+			break;
 		}
+
 
 		window.clear();
 		window.draw(bgSprite);

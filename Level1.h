@@ -32,32 +32,29 @@ public:
 	sf::View view;
 	vector <Enemy *> enemies;
 	vector <Bullet> bullets;
-	vector <Powerups *> powers;
+	vector <Powerups *> powerups;
 	Loader loader;
 	Logics logics;
 	GameState gameState;
 	sf::Sprite bgSprite;
 	int waveCount;
 	sf::FloatRect bounds;
-	sf::Music music;
 };
-Level1::Level1() {
-	
+Level1::Level1() {	
+
+}
+
+int Level1::run(sf::RenderWindow &window) {	
+	this->view.reset(sf::FloatRect(0, 0, 1920, 1080));
+	this->isRunning = true;
+	srand(time(NULL));
 	if (!music.openFromFile("assets/sounds/Drums_of_the_Deep.ogg")) {
 		cout << "Could not open assets/sounds/Drums_of_the_Deep.ogg" << endl;
 	}
 	music.openFromFile("assets/sounds/Drums_of_the_Deep.ogg");
 	music.setLoop(true);
-	//enemiesKilled = 0;
-}
-
-int Level1::run(sf::RenderWindow &window) {
-	
-	this->view.reset(sf::FloatRect(0, 0, 1920, 1080));
-	this->isRunning = true;
-	srand(time(NULL));
-	this->music.setVolume(musicVolume);
-	this->music.play();
+	music.setVolume(musicVolume);
+	music.play();
 
 	sf::SoundBuffer laserBuffer;
 	sf::SoundBuffer explosionBuffer;
@@ -85,12 +82,18 @@ int Level1::run(sf::RenderWindow &window) {
 	sf::Clock enemySpawnTimer;
 	sf::Clock waveTimer;
 	sf::Clock fireRateTimer;
-	sf::Clock wait;
+	sf::Clock statusTimer;
+	bool statusTimerIsOn = false;
 
 	int enemySpawnInterval = 3;
-	int waveInterval = 10;
+	int waveInterval = 15;
 
 	waveCount = 1;
+	points = 0;
+	player.health = 100;
+	player.shieldCharge = 200;
+	player.pointMultiplier = 1;
+	player.setPosition(player.spawnPoint);
 
 	sf::Font font(loader.loadFont("assets/fonts/space_age.ttf"));
 
@@ -103,9 +106,9 @@ int Level1::run(sf::RenderWindow &window) {
 
 	gameState.setGameState(1);
 
-	while (isRunning)
+	while (this->isRunning)
 	{
-		player.adjustVelocity();
+		
 		player.isShielded = false;
 		sf::Event event;
 		while (window.pollEvent(event))
@@ -115,7 +118,8 @@ int Level1::run(sf::RenderWindow &window) {
 				break;
 			case sf::Event::KeyPressed:
 				if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)) {
-					this->music.pause();
+					music.pause();
+					this->isRunning = false;
 					return 2;
 				}
 				break;
@@ -124,9 +128,8 @@ int Level1::run(sf::RenderWindow &window) {
 		window.setView(view);
 
 		if (gameState.getGameState() == 1) {
-
 			window.draw(bgSprite);
-
+			player.adjustVelocity();
 			player.checkBounds(player, bounds);
 			player.update(window, bullets, laser, bounds, fireRateTimer);
 			player.setPosition(player.getPosition() + player.velocity);
@@ -136,7 +139,7 @@ int Level1::run(sf::RenderWindow &window) {
 
 			logics.updateEnemies(window, player, enemies, bullets);
 			logics.resolveCollisions(enemies, player);
-			logics.updatePowerups(window, powers, player, ding);
+			logics.updatePowerups(window, powerups, player, ding);
 
 			if (enemySpawnTimer.getElapsedTime().asSeconds() >= enemySpawnInterval && waveCount < 4) {
 				this->enemyWaves(waveCount);
@@ -153,14 +156,27 @@ int Level1::run(sf::RenderWindow &window) {
 				victory.setCharacterSize(60);
 				victory.setPosition(bounds.width / 2 - victory.getLocalBounds().width / 2, bounds.height / 2 - victory.getLocalBounds().height / 2);
 				window.draw(victory);
-				survivalBonus = player.shieldCharge * 2;
-				return 4;
+				
+				if (statusTimerIsOn != true) {
+					statusTimer.restart();
+					statusTimerIsOn = true;
+				}
+				if (statusTimer.getElapsedTime().asSeconds() > 3) {
+					survivalBonus = player.health * 2;
+					if(powerups.size() != 0) {
+						powerups.clear();
+					}
+					if (bullets.size() != 0) {
+						bullets.clear();
+					}
+					return 4;
+				}
 			}
 
 			if (bullets.size() != 0) {
 				logics.resolveBulletHitsOnPlayer(window, bullets, player);
 				logics.destroyOutOfBoundsBullets(bullets, bounds);
-				logics.resolveBulletHitsOnEnemy(bullets, enemies, player, explosion, powers);
+				logics.resolveBulletHitsOnEnemy(bullets, enemies, player, explosion, powerups);
 			}
 			this->drawHUD(font, bounds, window, waveCount);
 		}

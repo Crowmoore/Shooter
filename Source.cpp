@@ -20,6 +20,8 @@ int main()
 	screens.push_back(&options);
 	PointsScreen points;
 	screens.push_back(&points);
+	MissionsScreen missions;
+	screens.push_back(&missions);
 
 	while (currentScreen >= 0) {
 		currentScreen = screens[currentScreen]->run(window);

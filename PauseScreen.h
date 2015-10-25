@@ -30,6 +30,9 @@ int PauseScreen::run(sf::RenderWindow &window) {
 	sf::Sound clip;
 	clip.setBuffer(clipBuffer);
 
+	paused.setCharacterSize(90);
+	paused.setPosition(view.getSize().x / 2 - paused.getLocalBounds().width / 2, 20);
+
 	resume.setCharacterSize(60);
 	resume.setPosition(view.getSize().x / 2 - resume.getLocalBounds().width / 2, 500);
 
@@ -84,6 +87,7 @@ int PauseScreen::run(sf::RenderWindow &window) {
 		}
 		window.clear();
 		window.setView(view);
+		window.draw(paused);
 		window.draw(resume);
 		window.draw(exit);
 		window.display();

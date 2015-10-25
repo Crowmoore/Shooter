@@ -10,7 +10,7 @@ public:
 	~MenuScreen() {}
 	virtual int run(sf::RenderWindow &window);
 
-	sf::Music music;
+	//sf::Music music;
 	sf::View view;
 };
 MenuScreen::MenuScreen() {
@@ -43,6 +43,8 @@ int MenuScreen::run(sf::RenderWindow &window) {
 	logoSprite.setTexture(logoTex);
 	logoSprite.setPosition(view.getSize().x / 2 - logoSprite.getLocalBounds().width / 2, 10);
 	
+	highscore = loader.loadHighscoreFromFile();
+
 	sf::SoundBuffer clipBuffer;
 	clipBuffer.loadFromFile("assets/sounds/clip.wav");
 	sf::Sound clip;
@@ -92,8 +94,8 @@ int MenuScreen::run(sf::RenderWindow &window) {
 				}
 				if (sf::Keyboard::isKeyPressed(sf::Keyboard::Return)) {
 					if (selection == 0) {
-						music.pause();
-						return 1;
+						//music.pause();
+						return 5;
 					}
 					else if(selection == 1){
 						return 3;

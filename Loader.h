@@ -2,6 +2,7 @@
 #include <string>
 #include <iostream>
 #include <SFML\Graphics.hpp>
+#include <fstream>
 
 using namespace std;
 
@@ -13,4 +14,6 @@ public:
 	sf::Texture loadTexture(string);
 	//sf::Sprite loadSprite(string);
 	sf::Font loadFont(string);
+	void saveHighscoreToFile(int score);
+	int loadHighscoreFromFile();
 };

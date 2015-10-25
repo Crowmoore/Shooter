@@ -147,6 +147,7 @@
     <ClInclude Include="Logics.h" />
     <ClInclude Include="Marauder.h" />
     <ClInclude Include="MenuScreen.h" />
+    <ClInclude Include="MissionsScreen.h" />
     <ClInclude Include="OptionsScreen.h" />
     <ClInclude Include="PauseScreen.h" />
     <ClInclude Include="Player.h" />

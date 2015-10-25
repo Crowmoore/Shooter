@@ -98,5 +98,8 @@
     <ClInclude Include="PointsScreen.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="MissionsScreen.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

@@ -21,10 +21,12 @@ int PointsScreen::run(sf::RenderWindow &window) {
 	bool isRunning = true;
 	sf::Font font(loader.loadFont("assets/fonts/space_age.ttf"));
 	sf::Text missionSuccessfull("Mission successfull", font);
-	int calculateSurvival = 0;
-	int calculatePoints = 0;
-	int calculateKills = 0;
-	int calculateTotal = 0;
+	int survivalCount = 0;
+	int pointsCount = 0;
+	int killCount = 0;
+	int totalCount = 0;
+	bool pointsCounted = false;
+	bool highscoreSaved = false;
 	
 	int totalPoints = points + survivalBonus;
 	
@@ -50,35 +52,54 @@ int PointsScreen::run(sf::RenderWindow &window) {
 				break;
 			case sf::Event::KeyPressed:
 				if (sf::Keyboard::isKeyPressed(sf::Keyboard::Return)) {
-					return 0;
+					if (pointsCounted == false) {
+						pointsCount = points;
+						killCount = enemiesKilled;
+						survivalCount = survivalBonus;
+						totalCount = totalPoints;
+					}
+					else {
+						music.pause();
+						return 0;
+					}
 				}
 			}
-		if (calculatePoints < points) {
+		if (pointsCount < points) {
 			pointSound.play();
-			calculatePoints++;
+			pointsCount++;
 		}
-		sf::Text score("Points: " + to_string(calculatePoints), font);
+		sf::Text score("Points: " + to_string(pointsCount), font);
 		score.setCharacterSize(50);
 		score.setPosition(200, 300);
-		if (calculateKills < enemiesKilled && calculatePoints == points) {
+
+		if (killCount < enemiesKilled && pointsCount == points) {
 			pointSound.play();
-			calculateKills++;
+			killCount++;
 		}
-		sf::Text kills("Enemies killed: " + to_string(calculateKills), font);
+		sf::Text kills("Enemies killed: " + to_string(killCount), font);
 		kills.setCharacterSize(50);
 		kills.setPosition(200, 400);
-		if (calculateSurvival < survivalBonus && calculateKills == enemiesKilled) {
+
+		if (survivalCount < survivalBonus && killCount == enemiesKilled) {
 			pointSound.play();
-			calculateSurvival++;
+			survivalCount++;
 		}
-		sf::Text survival("Survival bonus: " + to_string(calculateSurvival), font);
+		sf::Text survival("Survival bonus: " + to_string(survivalCount), font);
 		survival.setCharacterSize(50);
 		survival.setPosition(200, 500);
-		if (calculateTotal < totalPoints && calculateSurvival == survivalBonus) {
+
+		if (totalCount < totalPoints && survivalCount == survivalBonus) {
 			pointSound.play();
-			calculateTotal++;
+			totalCount++;
 		}
-		sf::Text total("Total: " + to_string(calculateTotal), font);
+		if (totalCount == totalPoints) {
+			pointsCounted = true;
+		}
+		if (totalPoints > highscore && pointsCounted != false && highscoreSaved != true) {
+			loader.saveHighscoreToFile(totalPoints);
+			highscoreSaved = true;
+		}
+		sf::Text total("Total: " + to_string(totalCount), font);
 		total.setCharacterSize(50);
 		total.setPosition(200, 600);
 
