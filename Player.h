@@ -9,7 +9,7 @@
 
 using namespace std;
 
-class Player : public sf::RectangleShape {
+class Player : public sf::Sprite {
 public:
 	Player();
 	~Player();
@@ -25,6 +25,7 @@ public:
 	void checkHealth(sf::Sound &);
 	float getShieldCharge();
 	void setShieldCharge(float);
+	void animate();
 	void drawShieldMeter(sf::RenderWindow &);
 	string getAmmoDescription();
 
@@ -39,6 +40,7 @@ public:
 	sf::Sound heartbeat;
 	string ammoDescription;
 	float damage;
+	int frameCount;
 	bool isShielded;
 	bool alive;
 	int pointMultiplier;

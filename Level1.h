@@ -37,8 +37,11 @@ public:
 	Logics logics;
 	GameState gameState;
 	sf::Sprite bgSprite;
+	sf::Sprite cursor;
 	int waveCount;
 	sf::FloatRect bounds;
+	sf::Clock statusTimer;
+	bool statusTimerIsOn;
 };
 Level1::Level1() {	
 
@@ -82,11 +85,10 @@ int Level1::run(sf::RenderWindow &window) {
 	sf::Clock enemySpawnTimer;
 	sf::Clock waveTimer;
 	sf::Clock fireRateTimer;
-	sf::Clock statusTimer;
-	bool statusTimerIsOn = false;
+	statusTimerIsOn = false;
 
 	int enemySpawnInterval = 3;
-	int waveInterval = 15;
+	int waveInterval = 10;
 
 	waveCount = 1;
 	points = 0;
@@ -103,6 +105,11 @@ int Level1::run(sf::RenderWindow &window) {
 
 	sf::Texture bgTex(loader.loadTexture("assets/pics/bg_space.jpg"));
 	bgSprite.setTexture(bgTex);
+
+	sf::Texture cursorTex(loader.loadTexture("assets/pics/cursor.png"));
+	cursorTex.setSmooth(true);
+	cursor.setTexture(cursorTex);
+	cursor.setOrigin(cursor.getLocalBounds().width / 2, cursor.getLocalBounds().height / 2);
 
 	gameState.setGameState(1);
 
@@ -132,6 +139,7 @@ int Level1::run(sf::RenderWindow &window) {
 			player.adjustVelocity();
 			player.checkBounds(player, bounds);
 			player.update(window, bullets, laser, bounds, fireRateTimer);
+			player.animate();
 			player.setPosition(player.getPosition() + player.velocity);
 			player.lookAtCursor(window, view);
 			player.checkHealth(heartbeat);
@@ -172,6 +180,7 @@ int Level1::run(sf::RenderWindow &window) {
 					return 4;
 				}
 			}
+			cursor.setPosition((sf::Vector2f)(window.mapPixelToCoords(sf::Mouse::getPosition(window))));
 
 			if (bullets.size() != 0) {
 				logics.resolveBulletHitsOnPlayer(window, bullets, player);
@@ -179,6 +188,7 @@ int Level1::run(sf::RenderWindow &window) {
 				logics.resolveBulletHitsOnEnemy(bullets, enemies, player, explosion, powerups);
 			}
 			this->drawHUD(font, bounds, window, waveCount);
+
 		}
 
 		window.display();
@@ -255,6 +265,8 @@ void Level1::drawHUD(sf::Font font, sf::FloatRect bounds, sf::RenderWindow &wind
 	hp.setPosition(bounds.width - 450, 10);
 	hp.setColor(sf::Color::White);
 	window.draw(hp);
+
+	window.draw(cursor);
 
 	sf::Text score("Score: " + to_string(points), font);
 	score.setPosition(10, 10);

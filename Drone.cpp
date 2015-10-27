@@ -3,24 +3,20 @@
 Drone::Drone() {}
 Drone::~Drone() {}
 Drone::Drone(sf::Vector2f spawn) {
-	sf::Image image;
-	if (!image.loadFromFile("assets/pics/link.jpg")) {
+	if (!this->tex.loadFromFile("assets/pics/drone.png")) {
 		cout << "Could not open image: assets/pics/drone.png" << endl;
 	}
-	image.loadFromFile("assets/pics/drone.png");
-	image.createMaskFromColor(sf::Color::White);
-	this->tex.loadFromImage(image);
+	this->tex.loadFromFile("assets/pics/drone.png");
+	this->setTexture(tex);
 
-	this->setSize(sf::Vector2f(64, 64));
-	this->setOrigin(32, 32);
+	this->setOrigin(this->getLocalBounds().width / 2, this->getLocalBounds().height / 2);
+	this->setScale(sf::Vector2f(0.3, 0.3));
 	this->setPosition(spawn);
-	this->setTexture(&tex);
 	this->setRotation(0);
 	this->damage = 5;
 	this->score = 10;
 	this->health = 30;
 	this->velocity = sf::Vector2f(2.f, 2.f);
-	this->hasRockets = false;
 }
 
 float Drone::calculateRotation(sf::RenderWindow &window, Player &player) {
@@ -36,6 +32,9 @@ float Drone::calculateRotation(sf::RenderWindow &window, Player &player) {
 	float radians = (atan2(dy, dx));
 	this->setRotation(degrees + 90);
 	return radians;
+}
+void Drone::animate() {
+
 }
 
 void Drone::update(sf::RenderWindow &window, Player &player, vector<Enemy *> &enemies, vector<Bullet> &bullets) {

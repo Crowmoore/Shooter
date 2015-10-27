@@ -51,7 +51,7 @@ int PointsScreen::run(sf::RenderWindow &window) {
 				window.close();
 				break;
 			case sf::Event::KeyPressed:
-				if (sf::Keyboard::isKeyPressed(sf::Keyboard::Return)) {
+				if (sf::Keyboard::isKeyPressed(sf::Keyboard::Return) || sf::Keyboard::isKeyPressed(sf::Keyboard::E)) {
 					if (pointsCounted == false) {
 						pointsCount = points;
 						killCount = enemiesKilled;

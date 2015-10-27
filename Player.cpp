@@ -4,9 +4,15 @@
 Player::~Player() {}
 
 Player::Player() {
-	this->tex.loadFromFile("assets/pics/ship.png");
-	this->tex.setSmooth(true);
-	this->setTexture(&tex);
+	if (!this->tex.loadFromFile("assets/pics/player.png")) {
+		cout << "Could not open image: assets/pics/player.png" << endl;
+	}
+	this->tex.loadFromFile("assets/pics/player.png");
+	this->setTexture(tex);
+
+	this->setTextureRect(sf::IntRect(0, 0, 170, 222));
+	this->setOrigin(this->getLocalBounds().width / 2, this->getLocalBounds().height / 2);
+	this->setScale(sf::Vector2f(0.3, 0.3));
 
 	this->shieldMeterBlack.setSize(sf::Vector2f(200, 20));
 	this->shieldMeterBlack.setPosition(350, 890);
@@ -24,8 +30,6 @@ Player::Player() {
 	this->shield.setTexture(shieldTex);
 	this->shield.setScale(sf::Vector2f(1.5, 1.5));
 
-	this->setSize(sf::Vector2f(64, 64));
-	this->setOrigin(32, 32);
 	this->spawnPoint = sf::Vector2f(400, 500);
 	this->setPosition(sf::Vector2f(spawnPoint));
 	this->health = 100;
@@ -42,10 +46,19 @@ Player::Player() {
 	this->isDying = false;
 	this->pointMultiplier = 1;
 	this->rateOfFire = 0.2;
+	this->frameCount = 0;
 }
 void Player::draw(sf::RenderWindow &window) {
 	window.draw(*this);
 }
+void Player::animate() {
+	this->setTextureRect(sf::IntRect(170 * frameCount, 0, 170, 222));
+	frameCount++;
+	if (frameCount > 2) {
+		frameCount = 0;
+	}
+}
+
 void Player::lookAtCursor(sf::RenderWindow &window, sf::View &view) {
 	sf::Vector2f currentPosition = this->getPosition();
 	sf::Vector2i cursorPosition = sf::Vector2i(window.mapPixelToCoords(sf::Mouse::getPosition(window)));
@@ -88,24 +101,24 @@ string Player::getAmmoDescription() {
 	return this->ammoDescription;
 }
 void Player::checkBounds(Player &player, sf::FloatRect bounds) {
-	if (player.getPosition().y < bounds.top + player.getSize().x || player.getPosition().y > bounds.height - player.getSize().x) {
+	if (player.getPosition().y < bounds.top + player.getOrigin().x || player.getPosition().y > bounds.height - player.getOrigin().x) {
 		player.velocity.y = 0;
 	}
-	else if (player.getPosition().x > bounds.width - player.getSize().x || player.getPosition().x < bounds.left + player.getSize().x) {
+	else if (player.getPosition().x > bounds.width - player.getOrigin().x || player.getPosition().x < bounds.left + player.getOrigin().x) {
 		player.velocity.x = 0;
 	}
 }
 void Player::update(sf::RenderWindow &window, vector <Bullet> &bullets, sf::Sound &laser, sf::FloatRect bounds, sf::Clock &fireRateTimer) {
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::W) && this->getPosition().y > bounds.top + this->getSize().x) {
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::W) && this->getPosition().y > bounds.top) {
 		this->velocity.y -= this->acceleration;
 	}
-	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::D) && this->getPosition().x < bounds.width - this->getSize().x) {
+	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::D) && this->getPosition().x < bounds.width) {
 		this->velocity.x += this->acceleration;
 	}
-	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::S) && this->getPosition().y < bounds.height - this->getSize().x) {
+	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::S) && this->getPosition().y < bounds.height) {
 		this->velocity.y += this->acceleration;
 	}
-	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::A) && this->getPosition().x > bounds.left + this->getSize().x) {
+	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::A) && this->getPosition().x > bounds.left) {
 		this->velocity.x -= this->acceleration;
 	}
 	if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
@@ -157,6 +170,6 @@ void Player::checkHealth(sf::Sound &heartbeat) {
 	}
 	if (this->health <= 0) {
 	this->alive = false;
-	//this->velocity = sf::Vector2f(0, 0);
+	this->velocity = sf::Vector2f(0, 0);
 	}
 }

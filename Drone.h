@@ -10,6 +10,7 @@ public:
 	float calculateRotation(sf::RenderWindow &, Player &);
 	void update(sf::RenderWindow &, Player &, vector<Enemy *> &, vector<Bullet> &);
 	void shoot(sf::RenderWindow &, Player &, vector <Enemy *> &, vector <Bullet> &);
+	void animate();
 
 	sf::Texture tex;
 };

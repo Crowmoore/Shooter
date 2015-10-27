@@ -127,6 +127,7 @@
     <ClCompile Include="Bullet.cpp" />
     <ClCompile Include="Drone.cpp" />
     <ClCompile Include="Enemy.cpp" />
+    <ClCompile Include="Explosion.cpp" />
     <ClCompile Include="GameState.cpp" />
     <ClCompile Include="Loader.cpp" />
     <ClCompile Include="Logics.cpp" />
@@ -139,6 +140,7 @@
     <ClInclude Include="Bullet.h" />
     <ClInclude Include="Drone.h" />
     <ClInclude Include="Enemy.h" />
+    <ClInclude Include="Explosion.h" />
     <ClInclude Include="GameScreens.h" />
     <ClInclude Include="GameState.h" />
     <ClInclude Include="Globals.h" />

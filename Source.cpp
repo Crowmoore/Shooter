@@ -9,6 +9,7 @@ int main()
 	vector <Screen *> screens;
 	int currentScreen = 0;
 	sf::RenderWindow window(sf::VideoMode::getDesktopMode(), "Project T.E.A.R");
+	window.setMouseCursorVisible(false);
 
 	MenuScreen menu;
 	screens.push_back(&menu);

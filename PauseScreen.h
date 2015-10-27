@@ -59,7 +59,7 @@ int PauseScreen::run(sf::RenderWindow &window) {
 					selection += 1;
 					break;
 				}
-				if (sf::Keyboard::isKeyPressed(sf::Keyboard::Return)) {
+				if (sf::Keyboard::isKeyPressed(sf::Keyboard::Return) || sf::Keyboard::isKeyPressed(sf::Keyboard::E)) {
 					if (selection == 0) {
 						return 1;
 					}

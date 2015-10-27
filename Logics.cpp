@@ -5,6 +5,7 @@ Logics::~Logics() {}
 
 void Logics::updateEnemies(sf::RenderWindow &window, Player &player, vector<Enemy *> &enemies, vector<Bullet> &bullets) {
 	for (int i = 0; i < enemies.size(); i++) {
+		enemies[i]->animate();
 		enemies[i]->calculateRotation(window, player);
 		enemies[i]->setPosition(enemies[i]->getPosition() + sf::Vector2f(cos(enemies[i]->calculateRotation(window, player)) * enemies[i]->velocity.x, sin(enemies[i]->calculateRotation(window, player)) * enemies[i]->velocity.y));
 		enemies[i]->shoot(window, player, enemies, bullets);
@@ -18,7 +19,7 @@ void Logics::resolveCollisions(vector <Enemy *> & enemies, Player &player) {
 		}
 		for (int j = i + 1; j < enemies.size(); j++) {
 			if (enemies[i]->getGlobalBounds().intersects(enemies[j]->getGlobalBounds())) {
-				enemies[i]->move((enemies[i]->getPosition().x / 32) - (enemies[j]->getPosition().x / 32), (enemies[i]->getPosition().y / 32) - (enemies[j]->getPosition().y / 32));
+				enemies[i]->move((enemies[i]->getPosition().x / 64) - (enemies[j]->getPosition().x / 64), (enemies[i]->getPosition().y / 64) - (enemies[j]->getPosition().y / 64));
 			}
 
 		}
@@ -50,7 +51,7 @@ void Logics::destroyOutOfBoundsBullets(vector <Bullet> &bullets, sf::FloatRect b
 		}
 	}
 }
-void Logics::resolveBulletHitsOnEnemy(vector <Bullet> &bullets, vector <Enemy *> &enemies, Player &player, sf::Sound &explosion, vector <Powerups *> &powerups) {
+void Logics::resolveBulletHitsOnEnemy(vector <Bullet> &bullets, vector <Enemy *> &enemies, Player &player, sf::Sound &explosionClip, vector <Powerups *> &powerups) {
 	for (int bullet = 0; bullet < bullets.size(); bullet++) {
 		for (int enemy = 0; enemy < enemies.size(); enemy++) {
 			if (bullets[bullet].id == "player" && bullets[bullet].getGlobalBounds().intersects(enemies[enemy]->getGlobalBounds())) {
@@ -63,7 +64,7 @@ void Logics::resolveBulletHitsOnEnemy(vector <Bullet> &bullets, vector <Enemy *>
 				points += enemies[enemy]->score * player.pointMultiplier;
 				extern int enemiesKilled;
 				enemiesKilled++;
-				explosion.play();
+				explosionClip.play();
 				int random = rand() % 10 + 1;
 				if (random == 1) {
 					Powerups* powerup = this->spawnRandomPowerUp();
@@ -76,6 +77,7 @@ void Logics::resolveBulletHitsOnEnemy(vector <Bullet> &bullets, vector <Enemy *>
 		}
 	}
 }
+
 void Logics::updatePowerups(sf::RenderWindow &window, vector <Powerups *> &powerups, Player &player, sf::Sound &ding) {
 	for (int i = 0; i < powerups.size(); i++) {
 		powerups[i]->move(rand() % 3 + (-1), rand() % 3 + (-1));

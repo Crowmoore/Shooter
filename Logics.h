@@ -6,6 +6,7 @@
 #include "SFML\Audio.hpp"
 #include <vector>
 #include "Powerups.h"
+#include "Explosion.h"
 
 using namespace std;
 

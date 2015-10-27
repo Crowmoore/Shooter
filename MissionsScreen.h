@@ -84,18 +84,18 @@ int MissionsScreen::run(sf::RenderWindow &window) {
 				if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)) {
 					return 0;
 				}
-				if (sf::Keyboard::isKeyPressed(sf::Keyboard::Return)) {
+				if (sf::Keyboard::isKeyPressed(sf::Keyboard::Return) || sf::Keyboard::isKeyPressed(sf::Keyboard::E)) {
 					if (selection == 0) {
 						this->isRunning = false;
 						music.pause();
 						return 1;
 					}
 				}
-				if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) {
+				if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right) || sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {
 					clip.play();
 					selection += 1;
 				}
-				if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) {
+				if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left) || sf::Keyboard::isKeyPressed(sf::Keyboard::A)) {
 					clip.play();
 					selection -= 1;
 				}

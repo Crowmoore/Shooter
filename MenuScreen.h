@@ -92,9 +92,8 @@ int MenuScreen::run(sf::RenderWindow &window) {
 					selection += 1;
 					break;
 				}
-				if (sf::Keyboard::isKeyPressed(sf::Keyboard::Return)) {
+				if (sf::Keyboard::isKeyPressed(sf::Keyboard::Return) || sf::Keyboard::isKeyPressed(sf::Keyboard::E)) {
 					if (selection == 0) {
-						//music.pause();
 						return 5;
 					}
 					else if(selection == 1){

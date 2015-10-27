@@ -84,7 +84,7 @@ int OptionsScreen::run(sf::RenderWindow &window) {
 					clip.play();
 					selection += 1;
 				}
-				if (sf::Keyboard::isKeyPressed(sf::Keyboard::Return)) {
+				if (sf::Keyboard::isKeyPressed(sf::Keyboard::Return) || sf::Keyboard::isKeyPressed(sf::Keyboard::E)) {
 					if (selection == 0) {
 
 					}
@@ -101,15 +101,15 @@ int OptionsScreen::run(sf::RenderWindow &window) {
 						return 0;
 					}
 				}
-				if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left) && selection == 0 && musicVolume > 0) {
+				if ((sf::Keyboard::isKeyPressed(sf::Keyboard::Left) || sf::Keyboard::isKeyPressed(sf::Keyboard::A)) && selection == 0 && musicVolume > 0) {
 					clip.play();
 					musicVolume -= 10;
 				}
-				if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right) && selection == 0 && musicVolume < 100) {
+				if ((sf::Keyboard::isKeyPressed(sf::Keyboard::Right) || sf::Keyboard::isKeyPressed(sf::Keyboard::D)) && selection == 0 && musicVolume < 100) {
 					clip.play();
 					musicVolume += 10;
 				}
-				if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left) && selection == 1 || sf::Keyboard::isKeyPressed(sf::Keyboard::Right) && selection == 1) {
+				if ((sf::Keyboard::isKeyPressed(sf::Keyboard::Left) || sf::Keyboard::isKeyPressed(sf::Keyboard::A)) && selection == 1 || (sf::Keyboard::isKeyPressed(sf::Keyboard::Right) || sf::Keyboard::isKeyPressed(sf::Keyboard::D)) && selection == 1) {
 					clip.play();
 					if (displaySelection == 0) {
 						displaySelection = 1;

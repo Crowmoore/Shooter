@@ -3,24 +3,22 @@
 Marauder::Marauder() {}
 Marauder::~Marauder() {}
 Marauder::Marauder(sf::Vector2f spawn) {
-	sf::Image image;
-	if (!image.loadFromFile("assets/pics/link.jpg")) {
-		cout << "Could not open image: assets/pics/link.jpg" << endl;
+	if (!this->tex.loadFromFile("assets/pics/marauder.png")) {
+		cout << "Could not open image: assets/pics/marauder.png" << endl;
 	}
-	image.loadFromFile("assets/pics/link.jpg");
-	image.createMaskFromColor(sf::Color::White);
-	this->tex.loadFromImage(image);
-
-	this->setSize(sf::Vector2f(128, 128));
-	this->setOrigin(64, 64);
+	this->tex.loadFromFile("assets/pics/marauder.png");
+	this->setTexture(tex);
+	
+	this->setTextureRect(sf::IntRect(0, 0, 162, 234));
+	this->setOrigin(this->getLocalBounds().width / 2, this->getLocalBounds().height / 2);
+	this->setScale(sf::Vector2f(0.9, 0.9));
 	this->setPosition(spawn);
-	this->setTexture(&tex);
 	this->setRotation(0);
 	this->damage = 20;
 	this->score = 40;
 	this->health = 120;
-	this->velocity = sf::Vector2f(1.f, 1.f);
-	this->hasRockets = true;
+	this->velocity = sf::Vector2f(1.5, 1.5);
+	this->frameCount = 0;
 }
 
 float Marauder::calculateRotation(sf::RenderWindow &window, Player &player) {
@@ -37,7 +35,13 @@ float Marauder::calculateRotation(sf::RenderWindow &window, Player &player) {
 	this->setRotation(degrees + 90);
 	return radians;
 }
-
+void Marauder::animate() {
+	this->setTextureRect(sf::IntRect(162 * frameCount, 0, 162, 234));
+	frameCount++;
+	if (frameCount > 2) {
+		frameCount = 0;
+	}
+}
 void Marauder::update(sf::RenderWindow &window, Player &player, vector<Enemy *> &enemies, vector<Bullet> &bullets) {
 	for (int i = 0; i < enemies.size(); i++) {
 		enemies[i]->calculateRotation(window, player);
@@ -51,7 +55,7 @@ void Marauder::shoot(sf::RenderWindow &window, Player &player, vector <Enemy *> 
 		int random = rand() % 300 + 1;
 		if (random == 1) {
 			Bullet ammo(this->getPosition(), player.getPosition(), sf::Color::Blue, "enemy");
-			ammo.velocity = sf::Vector2f(4, 4);
+			ammo.velocity = sf::Vector2f(6, 6);
 			ammo.setSize(sf::Vector2f(10, 18));
 			ammo.damage = this->damage;
 			ammo.calculateRotation(window);
