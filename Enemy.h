@@ -13,7 +13,7 @@ public:
 	~Enemy();
 	Enemy(string, sf::Texture *, sf::Vector2f);
 	virtual float calculateRotation(sf::RenderWindow &, Player &) = 0;
-	virtual void shoot(sf::RenderWindow &, Player &, vector <Enemy *> &, vector <Bullet> &) = 0;
+	virtual void shoot(sf::RenderWindow &, Player &, vector <Enemy *> &, vector <Bullet *> &) = 0;
 	virtual void animate() = 0;
 	void draw(sf::RenderWindow &window);
 

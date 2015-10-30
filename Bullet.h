@@ -5,7 +5,7 @@
 
 using namespace std;
 
-class Bullet : public sf::RectangleShape {
+class Bullet : public sf::Sprite {
 public:
 	Bullet();
 	~Bullet();
@@ -18,7 +18,7 @@ public:
 	float rateOfFire;
 	string id;
 
-	//sf::Sprite bulletSprite;
+	sf::Texture tex;
 	sf::Vector2f velocity;
 	sf::Vector2f position;
 	sf::Vector2f target;

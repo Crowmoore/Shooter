@@ -108,7 +108,7 @@ void Player::checkBounds(Player &player, sf::FloatRect bounds) {
 		player.velocity.x = 0;
 	}
 }
-void Player::update(sf::RenderWindow &window, vector <Bullet> &bullets, sf::Sound &laser, sf::FloatRect bounds, sf::Clock &fireRateTimer) {
+void Player::update(sf::RenderWindow &window, vector <Bullet *> &bullets, sf::Sound &laser, sf::FloatRect bounds, sf::Clock &fireRateTimer) {
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::W) && this->getPosition().y > bounds.top) {
 		this->velocity.y -= this->acceleration;
 	}
@@ -148,14 +148,27 @@ void Player::activateShield(sf::RenderWindow &window) {
 	}
 
 }
-void Player::shoot(sf::RenderWindow &window, vector <Bullet> &bullets, sf::Sound &laser) {
-	Bullet ammo(this->getPosition(), (sf::Vector2f) (window.mapPixelToCoords(sf::Mouse::getPosition(window))), sf::Color::Red, "player");
-	ammo.damage = this->damage;
-	ammo.velocity = sf::Vector2f(12, 12);
-	ammo.calculateRotation(window);
-	ammo.calculateDirection(window);
-	laser.play();
-	bullets.push_back(ammo);
+void Player::shoot(sf::RenderWindow &window, vector <Bullet *> &bullets, sf::Sound &laser) {
+	if(this->ammoDescription == "Red Rays of Happiness") {
+		Bullet *bullet = new Bullet(this->getPosition(), (sf::Vector2f) (window.mapPixelToCoords(sf::Mouse::getPosition(window))), sf::Color::Red, "player");
+		bullet->damage = this->damage;
+		bullet->velocity = sf::Vector2f(12, 12);
+		bullet->setScale(0.3, 0.3);
+		bullet->calculateRotation(window);
+		bullet->calculateDirection(window);
+		laser.play();
+		bullets.push_back(bullet);
+	}
+	if (this->ammoDescription == "Green Beams of Hurting") {
+		Bullet *bullet = new Bullet(this->getPosition(), (sf::Vector2f) (window.mapPixelToCoords(sf::Mouse::getPosition(window))), sf::Color::Green, "player");
+		bullet->damage = this->damage;
+		bullet->velocity = sf::Vector2f(14, 14);
+		bullet->setScale(0.4, 0.4);
+		bullet->calculateRotation(window);
+		bullet->calculateDirection(window);
+		laser.play();
+		bullets.push_back(bullet);
+	}
 }
 
 float Player::getShieldCharge()

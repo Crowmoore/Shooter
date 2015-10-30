@@ -19,8 +19,8 @@ public:
 	void adjustVelocity();
 	void setAmmoDescription(string);
 	void checkBounds(Player &, sf::FloatRect);
-	void update(sf::RenderWindow &, vector <Bullet> &, sf::Sound &, sf::FloatRect, sf::Clock &);
-	void shoot(sf::RenderWindow &, vector <Bullet> &, sf::Sound &);
+	void update(sf::RenderWindow &, vector <Bullet *> &, sf::Sound &, sf::FloatRect, sf::Clock &);
+	void shoot(sf::RenderWindow &, vector <Bullet *> &, sf::Sound &);
 	void activateShield(sf::RenderWindow &);
 	void checkHealth(sf::Sound &);
 	float getShieldCharge();

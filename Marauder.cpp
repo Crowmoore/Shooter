@@ -42,7 +42,7 @@ void Marauder::animate() {
 		frameCount = 0;
 	}
 }
-void Marauder::update(sf::RenderWindow &window, Player &player, vector<Enemy *> &enemies, vector<Bullet> &bullets) {
+void Marauder::update(sf::RenderWindow &window, Player &player, vector<Enemy *> &enemies, vector<Bullet *> &bullets) {
 	for (int i = 0; i < enemies.size(); i++) {
 		enemies[i]->calculateRotation(window, player);
 		enemies[i]->setPosition(enemies[i]->getPosition() + sf::Vector2f(cos(enemies[i]->calculateRotation(window, player)) * enemies[i]->velocity.x, sin(enemies[i]->calculateRotation(window, player)) * enemies[i]->velocity.y));
@@ -50,17 +50,17 @@ void Marauder::update(sf::RenderWindow &window, Player &player, vector<Enemy *> 
 		enemies[i]->draw(window);
 	}
 }
-void Marauder::shoot(sf::RenderWindow &window, Player &player, vector <Enemy *> &enemies, vector <Bullet> &bullets) {
+void Marauder::shoot(sf::RenderWindow &window, Player &player, vector <Enemy *> &enemies, vector <Bullet *> &bullets) {
 
 		int random = rand() % 300 + 1;
 		if (random == 1) {
-			Bullet ammo(this->getPosition(), player.getPosition(), sf::Color::Blue, "enemy");
-			ammo.velocity = sf::Vector2f(6, 6);
-			ammo.setSize(sf::Vector2f(10, 18));
-			ammo.damage = this->damage;
-			ammo.calculateRotation(window);
-			ammo.calculateDirection(window);
-			bullets.push_back(ammo);
+			Bullet* bullet = new Bullet(this->getPosition(), player.getPosition(), sf::Color::Yellow, "enemy");
+			bullet->velocity = sf::Vector2f(6, 6);
+			bullet->setScale(0.5, 0.5);
+			bullet->damage = this->damage;
+			bullet->calculateRotation(window);
+			bullet->calculateDirection(window);
+			bullets.push_back(bullet);
 		}
 	
 }

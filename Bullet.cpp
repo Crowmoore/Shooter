@@ -5,17 +5,13 @@
 Bullet::Bullet() {}
 Bullet::~Bullet() {}
 Bullet::Bullet(sf::Vector2f spawnPosition, sf::Vector2f targetPosition, sf::Color color, string id) {
-	/*sf::Image image;
-	sf::Texture tex;
-	if (!image.loadFromFile(pathName)) {
-		cout << "Could not open image: " << pathName << endl;
+	if (!this->tex.loadFromFile("assets/pics/bullet.png")) {
+		cout << "Could not open image: assets/pics/bullet.png" << endl;
 	}
-	else {
-		image.loadFromFile(pathName);
-		tex.loadFromImage(image);
-	}*/
-	this->setSize(sf::Vector2f(3, 10));
-	this->setFillColor(color);
+	this->tex.loadFromFile("assets/pics/bullet.png");
+	this->setTexture(tex);
+	this->setScale(sf::Vector2f(0.5, 0.5));
+	this->setColor(color);
 	this->id = id;
 	this->position = spawnPosition;
 	this->target = targetPosition;

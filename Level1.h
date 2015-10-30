@@ -16,6 +16,7 @@
 #include "Powerups.h"
 #include "Loader.h"
 #include "Screen.h"
+#include "Explosion.h"
 #include <stdlib.h>
 
 class Level1 : public Screen {
@@ -31,12 +32,14 @@ public:
 	Player player;
 	sf::View view;
 	vector <Enemy *> enemies;
-	vector <Bullet> bullets;
+	vector <Bullet *> bullets;
+	vector <Explosion *> explosions;
 	vector <Powerups *> powerups;
 	Loader loader;
 	Logics logics;
 	GameState gameState;
 	sf::Sprite bgSprite;
+	sf::Texture explosionTex;
 	sf::Sprite cursor;
 	int waveCount;
 	sf::FloatRect bounds;
@@ -58,6 +61,8 @@ int Level1::run(sf::RenderWindow &window) {
 	music.setLoop(true);
 	music.setVolume(musicVolume);
 	music.play();
+
+	explosionTex = loader.loadTexture("assets/pics/explosion.png");
 
 	sf::SoundBuffer laserBuffer;
 	sf::SoundBuffer explosionBuffer;
@@ -96,6 +101,8 @@ int Level1::run(sf::RenderWindow &window) {
 	player.shieldCharge = 200;
 	player.pointMultiplier = 1;
 	player.setPosition(player.spawnPoint);
+	player.ammoDescription = "Red Rays of Happiness";
+	player.rateOfFire = 0.2;
 
 	sf::Font font(loader.loadFont("assets/fonts/space_age.ttf"));
 
@@ -129,6 +136,11 @@ int Level1::run(sf::RenderWindow &window) {
 					this->isRunning = false;
 					return 2;
 				}
+				if (sf::Keyboard::isKeyPressed(sf::Keyboard::Return) && gameState.getGameState() == 0) {
+					music.pause();
+					this->isRunning = false;
+					return 0;
+				}
 				break;
 			}
 		window.clear();
@@ -161,7 +173,7 @@ int Level1::run(sf::RenderWindow &window) {
 				sf::Text victory("Victory!", font);
 				victory.setColor(sf::Color::White);
 				victory.setStyle(sf::Text::Bold);
-				victory.setCharacterSize(60);
+				victory.setCharacterSize(100);
 				victory.setPosition(bounds.width / 2 - victory.getLocalBounds().width / 2, bounds.height / 2 - victory.getLocalBounds().height / 2);
 				window.draw(victory);
 				
@@ -185,12 +197,14 @@ int Level1::run(sf::RenderWindow &window) {
 			if (bullets.size() != 0) {
 				logics.resolveBulletHitsOnPlayer(window, bullets, player);
 				logics.destroyOutOfBoundsBullets(bullets, bounds);
-				logics.resolveBulletHitsOnEnemy(bullets, enemies, player, explosion, powerups);
+				logics.resolveBulletHitsOnEnemy(window, bullets, enemies, player, explosion, powerups, explosions, &explosionTex);
+				
 			}
-			this->drawHUD(font, bounds, window, waveCount);
+			logics.updateExplosions(window, explosions);
+			
 
 		}
-
+		this->drawHUD(font, bounds, window, waveCount);
 		window.display();
 	}
 	return -1;
@@ -299,5 +313,6 @@ void Level1::drawHUD(sf::Font font, sf::FloatRect bounds, sf::RenderWindow &wind
 		death.setCharacterSize(60);
 		death.setPosition(bounds.width / 2 - death.getLocalBounds().width / 2, bounds.height / 2 - death.getLocalBounds().height / 2);
 		window.draw(death);
+		gameState.setGameState(0);
 	}
 }

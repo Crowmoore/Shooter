@@ -15,11 +15,12 @@ public:
 	Logics();
 	~Logics();
 	
-	void destroyOutOfBoundsBullets(vector <Bullet> &, sf::FloatRect);
-	void resolveBulletHitsOnPlayer(sf::RenderWindow &, vector <Bullet> &, Player &);
-	void resolveBulletHitsOnEnemy(vector <Bullet> &, vector <Enemy *> &, Player &, sf::Sound &, vector <Powerups *> &);
+	void destroyOutOfBoundsBullets(vector <Bullet *> &, sf::FloatRect);
+	void resolveBulletHitsOnPlayer(sf::RenderWindow &, vector <Bullet *> &, Player &);
+	void resolveBulletHitsOnEnemy(sf::RenderWindow &, vector <Bullet *> &, vector <Enemy *> &, Player &, sf::Sound &, vector <Powerups *> &, vector <Explosion *> &, sf::Texture *);
+	void updateExplosions(sf::RenderWindow &, vector <Explosion *> &);
 	void resolveCollisions(vector <Enemy *> &, Player &);
-	void updateEnemies(sf::RenderWindow &, Player &, vector<Enemy *> &, vector<Bullet> &);
+	void updateEnemies(sf::RenderWindow &, Player &, vector<Enemy *> &, vector<Bullet *> &);
 	void updatePowerups(sf::RenderWindow &, vector <Powerups *> &, Player &, sf::Sound &);
 	Powerups* spawnRandomPowerUp();
 	

@@ -1,17 +1,25 @@
 #include "Explosion.h"
+#include <iostream>
 
-Explosion::Explosion() {
+using namespace std;
+Explosion::Explosion(sf::Texture &tex) {
 	this->frameCount = 0;
-	sf::Texture texture;
-	texture.loadFromFile("assets/pics/explosion.png");
-	this->setTexture(texture);
+	this->setTexture(tex);
+	this->setTextureRect(sf::IntRect(0, 0, 256, 256));
+	this->setOrigin(this->getLocalBounds().width / 2, this->getLocalBounds().height / 2);
+	this->hasExploded = false;
 }
 Explosion::~Explosion() {}
 
-void Explosion::explode(sf::RenderWindow &window, sf::Vector2f position) {
-	this->setPosition(position);
-	for (this->frameCount = 0; this->frameCount < 48; this->frameCount++) {
-		this->setTextureRect(sf::IntRect(256 * this->frameCount, 0, 256, 256));
-		window.draw(*this);
+void Explosion::draw(sf::RenderWindow &window) {
+	window.draw(*this);
+}
+
+void Explosion::explode(sf::RenderWindow &window) {
+	this->setTextureRect(sf::IntRect(256 * this->frameCount, 0, 256, 256));
+	this->frameCount++;
+	window.draw(*this);
+	if (this->frameCount >= 48) {
+		this->hasExploded = true;
 	}
 }

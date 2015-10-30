@@ -37,7 +37,7 @@ void Drone::animate() {
 
 }
 
-void Drone::update(sf::RenderWindow &window, Player &player, vector<Enemy *> &enemies, vector<Bullet> &bullets) {
+void Drone::update(sf::RenderWindow &window, Player &player, vector<Enemy *> &enemies, vector <Bullet *> &bullets) {
 	for (int i = 0; i < enemies.size(); i++) {
 		enemies[i]->calculateRotation(window, player);
 		enemies[i]->setPosition(enemies[i]->getPosition() + sf::Vector2f(cos(enemies[i]->calculateRotation(window, player)) * enemies[i]->velocity.x, sin(enemies[i]->calculateRotation(window, player)) * enemies[i]->velocity.y));
@@ -45,17 +45,17 @@ void Drone::update(sf::RenderWindow &window, Player &player, vector<Enemy *> &en
 		enemies[i]->draw(window);
 	}
 }
-void Drone::shoot(sf::RenderWindow &window, Player &player, vector <Enemy *> &enemies, vector <Bullet> &bullets) {
+void Drone::shoot(sf::RenderWindow &window, Player &player, vector <Enemy *> &enemies, vector <Bullet *> &bullets) {
 
 		int random = rand() % 50 + 1;
 		if (random == 1) {
-			Bullet ammo(this->getPosition(), player.getPosition(), sf::Color::Green, "enemy");
-			ammo.velocity = sf::Vector2f(8, 8);
-			ammo.setSize(sf::Vector2f(6, 13));
-			ammo.damage = this->damage;
-			ammo.calculateRotation(window);
-			ammo.calculateDirection(window);
-			bullets.push_back(ammo);
+			Bullet* bullet = new Bullet(this->getPosition(), player.getPosition(), sf::Color::Yellow, "enemy");
+			bullet->velocity = sf::Vector2f(8, 8);
+			bullet->setScale(0.3, 0.3);
+			bullet->damage = this->damage;
+			bullet->calculateRotation(window);
+			bullet->calculateDirection(window);
+			bullets.push_back(bullet);
 		}
 	
 }
