@@ -3,10 +3,8 @@
 Drone::Drone() {}
 Drone::~Drone() {}
 Drone::Drone(sf::Vector2f spawn) {
-	if (!this->tex.loadFromFile("assets/pics/drone.png")) {
-		cout << "Could not open image: assets/pics/drone.png" << endl;
-	}
-	this->tex.loadFromFile("assets/pics/drone.png");
+	Loader loader;
+	this->tex = loader.loadTexture("assets/pics/drone.png");
 	this->setTexture(tex);
 
 	this->setOrigin(this->getLocalBounds().width / 2, this->getLocalBounds().height / 2);
@@ -33,26 +31,16 @@ float Drone::calculateRotation(sf::RenderWindow &window, Player &player) {
 	this->setRotation(degrees + 90);
 	return radians;
 }
-void Drone::animate() {
+void Drone::animate() {}
 
-}
-
-void Drone::update(sf::RenderWindow &window, Player &player, vector<Enemy *> &enemies, vector <Bullet *> &bullets) {
-	for (int i = 0; i < enemies.size(); i++) {
-		enemies[i]->calculateRotation(window, player);
-		enemies[i]->setPosition(enemies[i]->getPosition() + sf::Vector2f(cos(enemies[i]->calculateRotation(window, player)) * enemies[i]->velocity.x, sin(enemies[i]->calculateRotation(window, player)) * enemies[i]->velocity.y));
-		enemies[i]->shoot(window, player, enemies, bullets);
-		enemies[i]->draw(window);
-	}
-}
 void Drone::shoot(sf::RenderWindow &window, Player &player, vector <Enemy *> &enemies, vector <Bullet *> &bullets) {
 
 		int random = rand() % 50 + 1;
 		if (random == 1) {
 			Bullet* bullet = new Bullet(this->getPosition(), player.getPosition(), sf::Color::Yellow, "enemy");
-			bullet->velocity = sf::Vector2f(8, 8);
+			bullet->setVelocity(sf::Vector2f(8, 8));
 			bullet->setScale(0.3, 0.3);
-			bullet->damage = this->damage;
+			bullet->setDamage(this->damage);
 			bullet->calculateRotation(window);
 			bullet->calculateDirection(window);
 			bullets.push_back(bullet);

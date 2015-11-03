@@ -25,10 +25,7 @@ int MissionsScreen::run(sf::RenderWindow &window) {
 	bgSprite.setTexture(bgTex);
 	bgSprite.setPosition(0, 0);
 
-	sf::SoundBuffer clipBuffer;
-	clipBuffer.loadFromFile("assets/sounds/clip.wav");
-	sf::Sound clip;
-	clip.setBuffer(clipBuffer);
+	sf::Sound clip = loader.loadSound("assets/sounds/clip.wav");
 	
 	sf::Text missionSelect("Available missions", font);
 	missionSelect.setCharacterSize(60);

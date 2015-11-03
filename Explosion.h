@@ -8,7 +8,9 @@ public:
 
 	void explode(sf::RenderWindow &);
 	void draw(sf::RenderWindow &);
-
+	bool getExploded();
+	void setExploded(bool);
+private:
 	int frameCount;
 	bool hasExploded;
 };

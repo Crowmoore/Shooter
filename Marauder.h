@@ -7,10 +7,11 @@ public:
 	~Marauder();
 	Marauder(sf::Vector2f);
 	float calculateRotation(sf::RenderWindow &, Player &);
-	void update(sf::RenderWindow &, Player &, vector<Enemy *> &, vector<Bullet *> &);
 	void shoot(sf::RenderWindow &, Player &, vector <Enemy *> &, vector <Bullet *> &);
 	void animate();
 
-	sf::Texture tex;
+	
+private:
 	int frameCount;
+	sf::Texture tex;
 };

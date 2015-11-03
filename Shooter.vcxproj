@@ -151,7 +151,6 @@
     <ClInclude Include="MenuScreen.h" />
     <ClInclude Include="MissionsScreen.h" />
     <ClInclude Include="OptionsScreen.h" />
-    <ClInclude Include="PauseScreen.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="PointsScreen.h" />
     <ClInclude Include="Powerups.h" />

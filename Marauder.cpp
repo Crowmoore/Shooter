@@ -3,15 +3,13 @@
 Marauder::Marauder() {}
 Marauder::~Marauder() {}
 Marauder::Marauder(sf::Vector2f spawn) {
-	if (!this->tex.loadFromFile("assets/pics/marauder.png")) {
-		cout << "Could not open image: assets/pics/marauder.png" << endl;
-	}
-	this->tex.loadFromFile("assets/pics/marauder.png");
+	Loader loader;
+	this->tex = loader.loadTexture("assets/pics/marauder.png");
 	this->setTexture(tex);
 	
 	this->setTextureRect(sf::IntRect(0, 0, 162, 234));
 	this->setOrigin(this->getLocalBounds().width / 2, this->getLocalBounds().height / 2);
-	this->setScale(sf::Vector2f(0.9, 0.9));
+	this->setScale(sf::Vector2f(0.7, 0.7));
 	this->setPosition(spawn);
 	this->setRotation(0);
 	this->damage = 20;
@@ -42,22 +40,14 @@ void Marauder::animate() {
 		frameCount = 0;
 	}
 }
-void Marauder::update(sf::RenderWindow &window, Player &player, vector<Enemy *> &enemies, vector<Bullet *> &bullets) {
-	for (int i = 0; i < enemies.size(); i++) {
-		enemies[i]->calculateRotation(window, player);
-		enemies[i]->setPosition(enemies[i]->getPosition() + sf::Vector2f(cos(enemies[i]->calculateRotation(window, player)) * enemies[i]->velocity.x, sin(enemies[i]->calculateRotation(window, player)) * enemies[i]->velocity.y));
-		enemies[i]->shoot(window, player, enemies, bullets);
-		enemies[i]->draw(window);
-	}
-}
 void Marauder::shoot(sf::RenderWindow &window, Player &player, vector <Enemy *> &enemies, vector <Bullet *> &bullets) {
 
 		int random = rand() % 300 + 1;
 		if (random == 1) {
 			Bullet* bullet = new Bullet(this->getPosition(), player.getPosition(), sf::Color::Yellow, "enemy");
-			bullet->velocity = sf::Vector2f(6, 6);
+			bullet->setVelocity(sf::Vector2f(6, 6));
 			bullet->setScale(0.5, 0.5);
-			bullet->damage = this->damage;
+			bullet->setDamage(this->damage);
 			bullet->calculateRotation(window);
 			bullet->calculateDirection(window);
 			bullets.push_back(bullet);

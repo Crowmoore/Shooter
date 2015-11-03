@@ -32,10 +32,7 @@ int PointsScreen::run(sf::RenderWindow &window) {
 	
 	sf::Text promt("Press enter to continue", font);
 
-	sf::SoundBuffer pointsBuffer;
-	pointsBuffer.loadFromFile("assets/sounds/points.wav");
-	sf::Sound pointSound;
-	pointSound.setBuffer(pointsBuffer);
+	sf::Sound pointSound = loader.loadSound("assets/sounds/points.wav");
 	pointSound.setVolume(10);
 
 	missionSuccessfull.setCharacterSize(60);

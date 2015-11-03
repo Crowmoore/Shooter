@@ -22,6 +22,30 @@ Bullet::Bullet(sf::Vector2f spawnPosition, sf::Vector2f targetPosition, sf::Colo
 void Bullet::draw(sf::RenderWindow &window) {
 	window.draw(*this);
 }
+float Bullet::getDamage()
+{
+	return this->damage;
+}
+void Bullet::setDamage(float damage)
+{
+	this->damage = damage;
+}
+string Bullet::getId()
+{
+	return this->id;
+}
+void Bullet::setId(string id)
+{
+	this->id = id;
+}
+sf::Vector2f Bullet::getVelocity()
+{
+	return this->velocity;
+}
+void Bullet::setVelocity(sf::Vector2f velocity)
+{
+	this->velocity = velocity;
+}
 float Bullet::calculateRotation(sf::RenderWindow &window) {
 	sf::Vector2f currentPosition = this->getPosition();
 	sf::Vector2f targetPosition = this->target;

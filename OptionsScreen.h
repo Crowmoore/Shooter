@@ -33,10 +33,7 @@ int OptionsScreen::run(sf::RenderWindow &window) {
 	int selection = 0;
 	int displaySelection = 0;
 
-	sf::SoundBuffer clipBuffer;
-	clipBuffer.loadFromFile("assets/sounds/clip.wav");
-	sf::Sound clip;
-	clip.setBuffer(clipBuffer);
+	sf::Sound clip = loader.loadSound("assets/sounds/clip.wav");
 
 	volume.setCharacterSize(60);
 	volume.setPosition(200, 300);

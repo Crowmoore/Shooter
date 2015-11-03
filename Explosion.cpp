@@ -15,6 +15,16 @@ void Explosion::draw(sf::RenderWindow &window) {
 	window.draw(*this);
 }
 
+bool Explosion::getExploded()
+{
+	return this->hasExploded;
+}
+
+void Explosion::setExploded(bool exploded)
+{
+	this->hasExploded = exploded;
+}
+
 void Explosion::explode(sf::RenderWindow &window) {
 	this->setTextureRect(sf::IntRect(256 * this->frameCount, 0, 256, 256));
 	this->frameCount++;

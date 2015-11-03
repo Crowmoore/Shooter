@@ -6,6 +6,6 @@ public:
 	~GameState();
 	void setGameState(int);
 	int getGameState();
-
+private:
 	int gameState;
 };

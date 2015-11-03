@@ -2,6 +2,7 @@
 
 #include "GameScreens.h"
 
+
 using namespace std;
 
 int main()
@@ -15,8 +16,6 @@ int main()
 	screens.push_back(&menu);
 	Level1 level1;
 	screens.push_back(&level1);
-	PauseScreen pause;
-	screens.push_back(&pause);
 	OptionsScreen options;
 	screens.push_back(&options);
 	PointsScreen points;

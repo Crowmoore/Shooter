@@ -7,7 +7,7 @@ void Logics::updateEnemies(sf::RenderWindow &window, Player &player, vector<Enem
 	for (int i = 0; i < enemies.size(); i++) {
 		enemies[i]->animate();
 		enemies[i]->calculateRotation(window, player);
-		enemies[i]->setPosition(enemies[i]->getPosition() + sf::Vector2f(cos(enemies[i]->calculateRotation(window, player)) * enemies[i]->velocity.x, sin(enemies[i]->calculateRotation(window, player)) * enemies[i]->velocity.y));
+		enemies[i]->setPosition(enemies[i]->getPosition() + sf::Vector2f(cos(enemies[i]->calculateRotation(window, player)) * enemies[i]->getVelocity().x, sin(enemies[i]->calculateRotation(window, player)) * enemies[i]->getVelocity().y));
 		enemies[i]->shoot(window, player, enemies, bullets);
 		enemies[i]->draw(window);
 	}
@@ -25,17 +25,28 @@ void Logics::resolveCollisions(vector <Enemy *> & enemies, Player &player) {
 		}
 	}
 }
-void Logics::resolveBulletHitsOnPlayer(sf::RenderWindow &window, vector <Bullet *> &bullets, Player &player) {
+void Logics::resolveBulletHitsOnPlayer(sf::RenderWindow &window,
+										vector <Bullet *> &bullets,
+										Player &player,
+										sf::Sound &explosionClip,
+										vector <Explosion *> &explosions,
+										sf::Texture *explosionTex) {
 	for (int bullet = 0; bullet < bullets.size(); bullet++) {
-		bullets[bullet]->setPosition(bullets[bullet]->getPosition() + bullets[bullet]->velocity);
+		bullets[bullet]->setPosition(bullets[bullet]->getPosition() + bullets[bullet]->getVelocity());
 		bullets[bullet]->draw(window);
-		if (bullets[bullet]->id == "enemy" && bullets[bullet]->getGlobalBounds().intersects(player.getGlobalBounds())) {
-			if (player.isShielded != true) {
-				player.health -= bullets[bullet]->damage;
+		if (bullets[bullet]->getId() == "enemy" && bullets[bullet]->getGlobalBounds().intersects(player.getGlobalBounds())) {
+			if (player.getShielded() != true) {
+				player.setHealth(player.getHealth() - bullets[bullet]->getDamage());
 			}
 			else {
 				player.shield.setColor(sf::Color(255, 255, 255, 128));
 				window.draw(player.shield);
+			}
+			if (player.getAlive() != true) {
+				Explosion *explosion = new Explosion(*explosionTex);
+				explosion->setPosition(player.getPosition());
+				explosions.push_back(explosion);
+				explosionClip.play();
 			}
 			delete bullets[bullet];
 			bullets.erase(bullets.begin() + bullet);
@@ -53,18 +64,25 @@ void Logics::destroyOutOfBoundsBullets(vector <Bullet *> &bullets, sf::FloatRect
 		}
 	}
 }
-void Logics::resolveBulletHitsOnEnemy(sf::RenderWindow &window, vector <Bullet *> &bullets, vector <Enemy *> &enemies, Player &player, sf::Sound &explosionClip, vector <Powerups *> &powerups, vector <Explosion *> &explosions, sf::Texture *explosionTex) {
+void Logics::resolveBulletHitsOnEnemy(sf::RenderWindow &window,
+										vector <Bullet *> &bullets,
+										vector <Enemy *> &enemies,
+										Player &player,
+										sf::Sound &explosionClip,
+										vector <Powerups *> &powerups,
+										vector <Explosion *> &explosions,
+										sf::Texture *explosionTex) {
 	for (int bullet = 0; bullet < bullets.size(); bullet++) {
 		for (int enemy = 0; enemy < enemies.size(); enemy++) {
-			if (bullets[bullet]->id == "player" && bullets[bullet]->getGlobalBounds().intersects(enemies[enemy]->getGlobalBounds())) {
-				enemies[enemy]->health -= bullets[bullet]->damage;
+			if (bullets[bullet]->getId() == "player" && bullets[bullet]->getGlobalBounds().intersects(enemies[enemy]->getGlobalBounds())) {
+				enemies[enemy]->setHealth(enemies[enemy]->getHealth() - bullets[bullet]->getDamage());
 				delete bullets[bullet];
 				bullets.erase(bullets.begin() + bullet);
 				break;
 			}
-			if (enemies[enemy]->health <= 0) {
+			if (enemies[enemy]->getHealth() <= 0) {
 				extern int points;
-				points += enemies[enemy]->score * player.pointMultiplier;
+				points += enemies[enemy]->getScore() * player.getPointMultiplier();
 				extern int enemiesKilled;
 				enemiesKilled++;
 				Explosion *explosion = new Explosion(*explosionTex);
@@ -86,7 +104,7 @@ void Logics::resolveBulletHitsOnEnemy(sf::RenderWindow &window, vector <Bullet *
 void Logics::updateExplosions(sf::RenderWindow &window, vector <Explosion *> &explosions) {
 	for (int i = 0; i < explosions.size(); i++) {		
 		explosions[i]->explode(window);
-		if (explosions[i]->hasExploded != false) {
+		if (explosions[i]->getExploded() != false) {
 			delete explosions[i];
 			explosions.erase(explosions.begin() + i);
 		}
@@ -97,32 +115,32 @@ void Logics::updatePowerups(sf::RenderWindow &window, vector <Powerups *> &power
 	for (int i = 0; i < powerups.size(); i++) {
 		powerups[i]->move(rand() % 3 + (-1), rand() % 3 + (-1));
 		powerups[i]->draw(window);
-		if (powerups[i]->id == "multiplier" && powerups[i]->getGlobalBounds().intersects(player.getGlobalBounds())) {
+		if (powerups[i]->getId() == "multiplier" && powerups[i]->getGlobalBounds().intersects(player.getGlobalBounds())) {
 			ding.play();
-			player.pointMultiplier = player.pointMultiplier * 2;
+			player.setPointMultiplier(player.getPointMultiplier() * 2);
 			delete powerups[i];
 			powerups.erase(powerups.begin() + i);
 			break;
 		}
-		if (powerups[i]->id == "30shield" && powerups[i]->getGlobalBounds().intersects(player.getGlobalBounds())) {
+		if (powerups[i]->getId() == "30shield" && powerups[i]->getGlobalBounds().intersects(player.getGlobalBounds())) {
 			ding.play();
-			player.shieldCharge += 30;
+			player.setShieldCharge(player.getShieldCharge() + 30);
 			delete powerups[i];
 			powerups.erase(powerups.begin() + i);
 			break;
 		}
-		if (powerups[i]->id == "firerateUp" && powerups[i]->getGlobalBounds().intersects(player.getGlobalBounds())) {
+		if (powerups[i]->getId() == "firerateUp" && powerups[i]->getGlobalBounds().intersects(player.getGlobalBounds())) {
 			ding.play();
-			player.rateOfFire -= 0.1;
+			player.setRateOfFire(player.getRateOfFire() - 0.1);
 			delete powerups[i];
 			powerups.erase(powerups.begin() + i);
 			break;
 		}
-		if (powerups[i]->id == "greenBullets" && powerups[i]->getGlobalBounds().intersects(player.getGlobalBounds())) {
+		if (powerups[i]->getId() == "greenBullets" && powerups[i]->getGlobalBounds().intersects(player.getGlobalBounds())) {
 			ding.play();
-			player.ammoDescription = "Green Beams of Hurting";
-			player.damage += 10;
-			player.rateOfFire += 0.2;
+			player.setAmmoDescription("Green Beams of Hurting");
+			player.setDamage(20);
+			player.setRateOfFire(0.4);
 			delete powerups[i];
 			powerups.erase(powerups.begin() + i);
 			break;

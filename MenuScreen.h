@@ -10,7 +10,6 @@ public:
 	~MenuScreen() {}
 	virtual int run(sf::RenderWindow &window);
 
-	//sf::Music music;
 	sf::View view;
 };
 MenuScreen::MenuScreen() {
@@ -31,11 +30,7 @@ int MenuScreen::run(sf::RenderWindow &window) {
 	sf::Text options("Options", font);
 	sf::Text exit("Exit", font);
 	int selection = 0;
-	sf::Image logo;
-	if (!logo.loadFromFile("assets/pics/logo.png")) {
-		cout << "Could not open image: assets/pics/logo.png" << endl;
-	}
-	logo.loadFromFile("assets/pics/logo.png");
+	sf::Image logo = loader.loadImage("assets/pics/logo.png");; 
 	logo.createMaskFromColor(sf::Color::Black);
 	sf::Texture logoTex;
 	logoTex.loadFromImage(logo);
@@ -45,17 +40,11 @@ int MenuScreen::run(sf::RenderWindow &window) {
 	
 	highscore = loader.loadHighscoreFromFile();
 
-	sf::SoundBuffer clipBuffer;
-	clipBuffer.loadFromFile("assets/sounds/clip.wav");
-	sf::Sound clip;
-	clip.setBuffer(clipBuffer);
+	sf::Sound clip = loader.loadSound("assets/sounds/clip.wav");
 
 	if (music.getStatus() != sf::Music::Playing) {
-		if (!music.openFromFile("assets/sounds/Ossuary5_Rest.ogg")) {
-			cout << "Could not open assets/sounds/Ossuary5_Rest.ogg" << endl;
-		}
-		music.openFromFile("assets/sounds/Ossuary5_Rest.ogg");
-		music.setLoop(true);
+		loader.loadMusic("assets/sounds/Ossuary5_Rest.ogg");
+		music.setVolume(musicVolume);
 		music.play();
 	}
 
@@ -94,10 +83,10 @@ int MenuScreen::run(sf::RenderWindow &window) {
 				}
 				if (sf::Keyboard::isKeyPressed(sf::Keyboard::Return) || sf::Keyboard::isKeyPressed(sf::Keyboard::E)) {
 					if (selection == 0) {
-						return 5;
+						return 4;
 					}
 					else if(selection == 1){
-						return 3;
+						return 2;
 					}
 					else {
 						return -1;

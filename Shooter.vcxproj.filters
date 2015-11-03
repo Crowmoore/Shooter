@@ -89,9 +89,6 @@
     <ClInclude Include="GameScreens.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="PauseScreen.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="OptionsScreen.h">
       <Filter>Header Files</Filter>
     </ClInclude>

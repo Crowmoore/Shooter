@@ -4,10 +4,8 @@
 Player::~Player() {}
 
 Player::Player() {
-	if (!this->tex.loadFromFile("assets/pics/player.png")) {
-		cout << "Could not open image: assets/pics/player.png" << endl;
-	}
-	this->tex.loadFromFile("assets/pics/player.png");
+	Loader loader;
+	this->tex = loader.loadTexture("assets/pics/player.png");
 	this->setTexture(tex);
 
 	this->setTextureRect(sf::IntRect(0, 0, 170, 222));
@@ -25,7 +23,7 @@ Player::Player() {
 	this->shieldMeterBlue.setOutlineColor(sf::Color::White);
 	this->shieldMeterBlue.setFillColor(sf::Color(51, 153, 255, 255));
 	
-	this->shieldTex.loadFromFile("assets/pics/shield.png");
+	this->shieldTex = loader.loadTexture("assets/pics/shield.png");
 	this->shieldTex.setSmooth(true);
 	this->shield.setTexture(shieldTex);
 	this->shield.setScale(sf::Vector2f(1.5, 1.5));
@@ -34,7 +32,6 @@ Player::Player() {
 	this->setPosition(sf::Vector2f(spawnPoint));
 	this->health = 100;
 	this->damage = 10;
-	this->score = 0;
 	this->ammoDescription = "Red Rays of Happiness";
 	this->shieldCharge = 200;
 	this->isShielded = false;
@@ -94,8 +91,80 @@ void Player::adjustVelocity() {
 void Player::setAmmoDescription(string descript) {
 	this->ammoDescription = descript;
 }
+int Player::getHealth()
+{
+	return this->health;
+}
+void Player::setHealth(int health)
+{
+	this->health = health;
+}
+float Player::getAcceleration()
+{
+	return this->acceleration;
+}
+void Player::setAcceleration(float acceleration)
+{
+	this->acceleration = acceleration;
+}
+float Player::getRateOfFire()
+{
+	return this->rateOfFire;
+}
+void Player::setRateOfFire(float rof)
+{
+	this->rateOfFire = rof;
+}
 void Player::setShieldCharge(float charge) {
 	this->shieldCharge = charge;
+}
+float Player::getDamage()
+{
+	return this->damage;
+}
+void Player::setDamage(float damage)
+{
+	this->damage = damage;
+}
+bool Player::getShielded()
+{
+	return this->isShielded;
+}
+void Player::setShielded(bool shielded)
+{
+	this->isShielded = shielded;
+}
+bool Player::getAlive()
+{
+	return this->alive;
+}
+void Player::setAlive(bool alive)
+{
+	this->alive = alive;
+}
+sf::Vector2f Player::getVelocity()
+{
+	return this->velocity;
+}
+void Player::setVelocity(sf::Vector2f velocity)
+{
+	this->velocity = velocity;
+}
+sf::Vector2f Player::getSpawnPoint()
+{
+	return this->spawnPoint;
+}
+void Player::setSpawnPoint(sf::Vector2f spawn)
+{
+	this->spawnPoint = spawn;
+}
+int Player::getPointMultiplier()
+{
+	return this->pointMultiplier;
+}
+void Player::setPointMultiplier(int multiplier)
+{
+	this->pointMultiplier = multiplier;
 }
 string Player::getAmmoDescription() {
 	return this->ammoDescription;
@@ -151,8 +220,8 @@ void Player::activateShield(sf::RenderWindow &window) {
 void Player::shoot(sf::RenderWindow &window, vector <Bullet *> &bullets, sf::Sound &laser) {
 	if(this->ammoDescription == "Red Rays of Happiness") {
 		Bullet *bullet = new Bullet(this->getPosition(), (sf::Vector2f) (window.mapPixelToCoords(sf::Mouse::getPosition(window))), sf::Color::Red, "player");
-		bullet->damage = this->damage;
-		bullet->velocity = sf::Vector2f(12, 12);
+		bullet->setDamage(this->damage);
+		bullet->setVelocity(sf::Vector2f(12, 12));
 		bullet->setScale(0.3, 0.3);
 		bullet->calculateRotation(window);
 		bullet->calculateDirection(window);
@@ -161,8 +230,8 @@ void Player::shoot(sf::RenderWindow &window, vector <Bullet *> &bullets, sf::Sou
 	}
 	if (this->ammoDescription == "Green Beams of Hurting") {
 		Bullet *bullet = new Bullet(this->getPosition(), (sf::Vector2f) (window.mapPixelToCoords(sf::Mouse::getPosition(window))), sf::Color::Green, "player");
-		bullet->damage = this->damage;
-		bullet->velocity = sf::Vector2f(14, 14);
+		bullet->setDamage(this->damage);
+		bullet->setVelocity(sf::Vector2f(14, 14));
 		bullet->setScale(0.4, 0.4);
 		bullet->calculateRotation(window);
 		bullet->calculateDirection(window);
@@ -182,6 +251,7 @@ void Player::checkHealth(sf::Sound &heartbeat) {
 		this->isDying = true;
 	}
 	if (this->health <= 0) {
+	this->health = 0;
 	this->alive = false;
 	this->velocity = sf::Vector2f(0, 0);
 	}
