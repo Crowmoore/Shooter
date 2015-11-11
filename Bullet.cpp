@@ -4,6 +4,7 @@
 
 Bullet::Bullet() {}
 Bullet::~Bullet() {}
+//Constructor that takes in the spawn position, target position, color for the bullet and the bullet's id.
 Bullet::Bullet(sf::Vector2f spawnPosition, sf::Vector2f targetPosition, sf::Color color, string id) {
 	if (!this->tex.loadFromFile("assets/pics/bullet.png")) {
 		cout << "Could not open image: assets/pics/bullet.png" << endl;
@@ -46,6 +47,7 @@ void Bullet::setVelocity(sf::Vector2f velocity)
 {
 	this->velocity = velocity;
 }
+//Calculate and set a bullet's rotation based on it's current position and the target position.
 float Bullet::calculateRotation(sf::RenderWindow &window) {
 	sf::Vector2f currentPosition = this->getPosition();
 	sf::Vector2f targetPosition = this->target;
@@ -59,6 +61,7 @@ float Bullet::calculateRotation(sf::RenderWindow &window) {
 	this->setRotation(degrees + 90);
 	return radians;
 }
+//Calculate the bullet's movement direction and set the bullet's velocity accordingly.
 void Bullet::calculateDirection(sf::RenderWindow &window) {
 	sf::Vector2f currentPosition = this->getPosition();
 	sf::Vector2f targetPosition = this->target;

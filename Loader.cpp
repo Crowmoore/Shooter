@@ -3,6 +3,7 @@
 Loader::Loader() {}
 Loader::~Loader() {}
 
+//Try to load font from the given file path.
 sf::Font Loader::loadFont(string path) {
 	sf::Font font;
 	try {
@@ -24,6 +25,7 @@ sf::Texture Loader::loadTexture(string path) {
 	}
 	return texture;
 }
+//Create a binary file. Apparently fstream does not throw exceptions by default so we have to say that we expect failbits and badbits.
 void Loader::createSaveFile() {
 	string filename = "score.bin";
 	fstream stream;
@@ -43,6 +45,7 @@ void Loader::createSaveFile() {
 		cout << "Could not close file " << filename << " Exception " << ex.what() << endl;
 	}
 }
+//Save highscore to binary file. If a file cannot be opened or it doesn't exist, call the createSaveFile function.
 void Loader::saveHighscoreToFile(int score) {
 	string filename = "score.bin";
 	fstream stream;
@@ -64,11 +67,18 @@ void Loader::saveHighscoreToFile(int score) {
 		cout << "Could not close file " << filename << " Exception " << ex.what() << endl;
 	}
 }
+//Try to load music from given file path.
 void Loader::loadMusic(string path) {
 	extern sf::Music music;
-	music.openFromFile(path);
+	try {
+		music.openFromFile(path);
+	}
+	catch (const exception &e) {
+		cout << "Could not load music: " << path << " Exception: " << e.what() << endl;
+	}
 	music.setLoop(true);
 }
+//Try to load an image and return it.
 sf::Image Loader::loadImage(string path) {
 	sf::Image image;
 	try {
@@ -79,14 +89,21 @@ sf::Image Loader::loadImage(string path) {
 	}
 	return image;
 }
+//Load a sound, set it to a new SoundBuffer and return the sound. 
 sf::Sound Loader::loadSound(string path)
 {
 	sf::Sound sound;
 	sf::SoundBuffer *buffer = new sf::SoundBuffer();
-	buffer->loadFromFile(path);
+	try {
+		buffer->loadFromFile(path);
+	}
+	catch (const exception &e) {
+		cout << "Could not load sound: " << path << " Exception: " << e.what() << endl;
+	}
 	sound.setBuffer(*buffer);
 	return sound;
 }
+//Try to read previous highscore from a binary file and return it.
 int Loader::loadHighscoreFromFile() {
 	string filename = "score.bin";
 	fstream stream;

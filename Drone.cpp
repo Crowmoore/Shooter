@@ -2,6 +2,7 @@
 
 Drone::Drone() {}
 Drone::~Drone() {}
+//Constructor. Only takes in the spawn position.
 Drone::Drone(sf::Vector2f spawn) {
 	Loader loader;
 	this->tex = loader.loadTexture("assets/pics/drone.png");
@@ -16,7 +17,7 @@ Drone::Drone(sf::Vector2f spawn) {
 	this->health = 30;
 	this->velocity = sf::Vector2f(2.f, 2.f);
 }
-
+//Calculate and set the rotation so the Drone always looks at the player.
 float Drone::calculateRotation(sf::RenderWindow &window, Player &player) {
 	sf::Vector2f currentPosition = this->getPosition();
 	sf::Vector2f playerPosition = player.getPosition();
@@ -31,9 +32,11 @@ float Drone::calculateRotation(sf::RenderWindow &window, Player &player) {
 	this->setRotation(degrees + 90);
 	return radians;
 }
+//No animations for the Drone yet. Maybe later.
 void Drone::animate() {}
 
-void Drone::shoot(sf::RenderWindow &window, Player &player, vector <Enemy *> &enemies, vector <Bullet *> &bullets) {
+//Check if the Drone should shoot. Create and initialize a bullet and push it to bullets vector.
+void Drone::shoot(sf::RenderWindow &window, Player &player, vector <Enemy *> &enemies, vector <Bullet *> &bullets, vector <Missile *> &missiles) {
 
 		int random = rand() % 50 + 1;
 		if (random == 1) {

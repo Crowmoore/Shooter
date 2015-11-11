@@ -38,7 +38,7 @@ int MenuScreen::run(sf::RenderWindow &window) {
 	logoSprite.setTexture(logoTex);
 	logoSprite.setPosition(view.getSize().x / 2 - logoSprite.getLocalBounds().width / 2, 10);
 	
-	highscore = loader.loadHighscoreFromFile();
+	level1Highscore = loader.loadHighscoreFromFile();
 
 	sf::Sound clip = loader.loadSound("assets/sounds/clip.wav");
 

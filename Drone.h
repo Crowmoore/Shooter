@@ -8,7 +8,7 @@ public:
 	Drone(sf::Vector2f);
 
 	float calculateRotation(sf::RenderWindow &, Player &);
-	void shoot(sf::RenderWindow &, Player &, vector <Enemy *> &, vector <Bullet *> &);
+	void shoot(sf::RenderWindow &, Player &, vector <Enemy *> &, vector <Bullet *> &, vector <Missile *> &);
 	void animate();
 private:
 	sf::Texture tex;

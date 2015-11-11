@@ -2,6 +2,7 @@
 
 Marauder::Marauder() {}
 Marauder::~Marauder() {}
+//Constructor. Only takes in the spawn position and initializes the Marauder.
 Marauder::Marauder(sf::Vector2f spawn) {
 	Loader loader;
 	this->tex = loader.loadTexture("assets/pics/marauder.png");
@@ -18,7 +19,7 @@ Marauder::Marauder(sf::Vector2f spawn) {
 	this->velocity = sf::Vector2f(1.5, 1.5);
 	this->frameCount = 0;
 }
-
+//Calculate and set the rotation so the Marauder always looks at the player.
 float Marauder::calculateRotation(sf::RenderWindow &window, Player &player) {
 	sf::Vector2f currentPosition = this->getPosition();
 	sf::Vector2f playerPosition = player.getPosition();
@@ -33,6 +34,7 @@ float Marauder::calculateRotation(sf::RenderWindow &window, Player &player) {
 	this->setRotation(degrees + 90);
 	return radians;
 }
+//Loop through the spritesheet.
 void Marauder::animate() {
 	this->setTextureRect(sf::IntRect(162 * frameCount, 0, 162, 234));
 	frameCount++;
@@ -40,17 +42,16 @@ void Marauder::animate() {
 		frameCount = 0;
 	}
 }
-void Marauder::shoot(sf::RenderWindow &window, Player &player, vector <Enemy *> &enemies, vector <Bullet *> &bullets) {
+//Check if the Marauder should shoot. Create and initialize a missile and push it to missiles vector.
+void Marauder::shoot(sf::RenderWindow &window, Player &player, vector <Enemy *> &enemies, vector <Bullet *> &bullets, vector <Missile *> &missiles) {
 
-		int random = rand() % 300 + 1;
-		if (random == 1) {
-			Bullet* bullet = new Bullet(this->getPosition(), player.getPosition(), sf::Color::Yellow, "enemy");
-			bullet->setVelocity(sf::Vector2f(6, 6));
-			bullet->setScale(0.5, 0.5);
-			bullet->setDamage(this->damage);
-			bullet->calculateRotation(window);
-			bullet->calculateDirection(window);
-			bullets.push_back(bullet);
-		}
-	
+	int random = rand() % 500 + 1;
+	if (random == 1) {
+		Missile* missile = new Missile(this->getPosition());
+		missile->velocity = (sf::Vector2f(5, 5));
+		missile->damage = (this->damage);
+		missile->calculateRotation(window, player);
+		missiles.push_back(missile);
+	}
+
 }

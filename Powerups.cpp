@@ -3,6 +3,7 @@
 Powerups::Powerups() {}
 Powerups::~Powerups() {}
 
+//Constructor takes in the texture path and an id for the Power-Up.
 Powerups::Powerups(string path, string id) {	
 	Loader loader;
 	this->setRadius(20);
@@ -11,7 +12,7 @@ Powerups::Powerups(string path, string id) {
 	this->setTexture(&tex);
 	this->id = id;
 }
-
+//Draw the Power-Up.
 void Powerups::draw(sf::RenderWindow &window) {
 	window.draw(*this);
 }

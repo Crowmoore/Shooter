@@ -7,7 +7,7 @@ public:
 	~Marauder();
 	Marauder(sf::Vector2f);
 	float calculateRotation(sf::RenderWindow &, Player &);
-	void shoot(sf::RenderWindow &, Player &, vector <Enemy *> &, vector <Bullet *> &);
+	void shoot(sf::RenderWindow &, Player &, vector <Enemy *> &, vector <Bullet *> &, vector <Missile *> &);
 	void animate();
 
 	

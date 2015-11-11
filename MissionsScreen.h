@@ -31,7 +31,7 @@ int MissionsScreen::run(sf::RenderWindow &window) {
 	missionSelect.setCharacterSize(60);
 	missionSelect.setPosition(view.getSize().x / 2 - missionSelect.getLocalBounds().width / 2, 20);
 
-	sf::Text highscore1("Highscore: " + to_string(highscore), font);
+	sf::Text highscore1("Highscore: " + to_string(level1Highscore), font);
 	highscore1.setCharacterSize(40);
 	highscore1.setPosition(view.getSize().x / 2 - highscore1.getLocalBounds().width / 2, 900);
 

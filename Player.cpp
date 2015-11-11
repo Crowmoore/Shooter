@@ -3,6 +3,7 @@
 
 Player::~Player() {}
 
+//Initialize the player.
 Player::Player() {
 	Loader loader;
 	this->tex = loader.loadTexture("assets/pics/player.png");
@@ -45,9 +46,11 @@ Player::Player() {
 	this->rateOfFire = 0.2;
 	this->frameCount = 0;
 }
+//Draw the player.
 void Player::draw(sf::RenderWindow &window) {
 	window.draw(*this);
 }
+//Loop through the spritesheet.
 void Player::animate() {
 	this->setTextureRect(sf::IntRect(170 * frameCount, 0, 170, 222));
 	frameCount++;
@@ -55,7 +58,7 @@ void Player::animate() {
 		frameCount = 0;
 	}
 }
-
+//Calculates and sets the rotation so the player always looks at the cursor.
 void Player::lookAtCursor(sf::RenderWindow &window, sf::View &view) {
 	sf::Vector2f currentPosition = this->getPosition();
 	sf::Vector2i cursorPosition = sf::Vector2i(window.mapPixelToCoords(sf::Mouse::getPosition(window)));
@@ -68,12 +71,14 @@ void Player::lookAtCursor(sf::RenderWindow &window, sf::View &view) {
 
 	this->setRotation(rotation + 90);
 }
+//Draw the meter that shows the shield charge.
 void Player::drawShieldMeter(sf::RenderWindow &window) {
 	this->shieldMeterBlue.setSize(sf::Vector2f(this->getShieldCharge(), 20));
 	window.draw(this->shieldMeterBlack);
 	window.draw(this->shieldMeterBlue);
 	
 }
+//Prevent the player from exceeding the maximum velocity.
 void Player::adjustVelocity() {
 	if (this->velocity.x < -this->maxVelocity) {
 		this->velocity.x = -this->maxVelocity;
@@ -169,6 +174,7 @@ void Player::setPointMultiplier(int multiplier)
 string Player::getAmmoDescription() {
 	return this->ammoDescription;
 }
+//Prevent the player from going out of bounds by checking the player's position and setting the velocity to 0 if near the edge.
 void Player::checkBounds(Player &player, sf::FloatRect bounds) {
 	if (player.getPosition().y < bounds.top + player.getOrigin().x || player.getPosition().y > bounds.height - player.getOrigin().x) {
 		player.velocity.y = 0;
@@ -177,6 +183,7 @@ void Player::checkBounds(Player &player, sf::FloatRect bounds) {
 		player.velocity.x = 0;
 	}
 }
+//Process the player's inputs WASD and mouse buttons.
 void Player::update(sf::RenderWindow &window, vector <Bullet *> &bullets, sf::Sound &laser, sf::FloatRect bounds, sf::Clock &fireRateTimer) {
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::W) && this->getPosition().y > bounds.top) {
 		this->velocity.y -= this->acceleration;
@@ -203,6 +210,7 @@ void Player::update(sf::RenderWindow &window, vector <Bullet *> &bullets, sf::So
 		this->shieldCharge = 200;
 	}
 }
+//Activate the shield and reduce the shield charge every frame by 0.5.
 void Player::activateShield(sf::RenderWindow &window) {
 	this->shield.setPosition(this->getPosition().x - 37, this->getPosition().y - 37);
 	this->shield.setColor(sf::Color(51, 153, 255, 128));
@@ -217,6 +225,7 @@ void Player::activateShield(sf::RenderWindow &window) {
 	}
 
 }
+//Check the player's ammoDescription, create and initialize bullets accordinly. Push the created bullet to the bullets vector.
 void Player::shoot(sf::RenderWindow &window, vector <Bullet *> &bullets, sf::Sound &laser) {
 	if(this->ammoDescription == "Red Rays of Happiness") {
 		Bullet *bullet = new Bullet(this->getPosition(), (sf::Vector2f) (window.mapPixelToCoords(sf::Mouse::getPosition(window))), sf::Color::Red, "player");
@@ -244,6 +253,7 @@ float Player::getShieldCharge()
 {
 	return this->shieldCharge;
 }
+//Check player's health and start playing the heartbeat sound if bellow 20. If at 0 or below, player is dead and it's velocity is set to 0.
 void Player::checkHealth(sf::Sound &heartbeat) {
 	if (this->health <= 20 && this->isDying == false) {
 		heartbeat.setLoop(true);

@@ -92,7 +92,7 @@ int PointsScreen::run(sf::RenderWindow &window) {
 		if (totalCount == totalPoints) {
 			pointsCounted = true;
 		}
-		if (totalPoints > highscore && pointsCounted != false && highscoreSaved != true) {
+		if (totalPoints > level1Highscore && pointsCounted != false && highscoreSaved != true) {
 			loader.saveHighscoreToFile(totalPoints);
 			highscoreSaved = true;
 		}

@@ -1,25 +1,24 @@
-﻿Build started 3.11.2015 14:53:47.
+﻿Build started 9.11.2015 16:04:42.
      1>Project "E:\Koulu\Olio 2\SFML\Shooter\Shooter\Shooter.vcxproj" on node 2 (Build target(s)).
      1>ClCompile:
-         E:\Visual Studio\VC\bin\CL.exe /c /I"E:\SFML-Visual_Studio2015RCx32\include" /ZI /nologo /W3 /WX- /sdl /Od /Oy- /D _MBCS /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"Debug\\" /Fd"Debug\vc140.pdb" /Gd /TP /analyze- /errorReport:prompt Source.cpp
-         Source.cpp
-     1>e:\koulu\olio 2\sfml\shooter\shooter\menuscreen.h(47): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-     1>e:\koulu\olio 2\sfml\shooter\shooter\menuscreen.h(64): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-     1>e:\koulu\olio 2\sfml\shooter\shooter\level1.h(58): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-     1>e:\koulu\olio 2\sfml\shooter\shooter\level1.h(293): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-     1>e:\koulu\olio 2\sfml\shooter\shooter\level1.h(297): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-     1>e:\koulu\olio 2\sfml\shooter\shooter\level1.h(304): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-     1>e:\koulu\olio 2\sfml\shooter\shooter\level1.h(308): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-     1>e:\koulu\olio 2\sfml\shooter\shooter\level1.h(315): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-     1>e:\koulu\olio 2\sfml\shooter\shooter\level1.h(319): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-     1>e:\koulu\olio 2\sfml\shooter\shooter\level1.h(326): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-     1>e:\koulu\olio 2\sfml\shooter\shooter\level1.h(330): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-     1>e:\koulu\olio 2\sfml\shooter\shooter\level1.h(420): warning C4305: 'argument': truncation from 'double' to 'float'
-     1>e:\koulu\olio 2\sfml\shooter\shooter\optionsscreen.h(122): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-     1>e:\koulu\olio 2\sfml\shooter\shooter\missionsscreen.h(47): warning C4305: 'argument': truncation from 'double' to 'float'
-     1>e:\koulu\olio 2\sfml\shooter\shooter\missionsscreen.h(60): warning C4305: 'argument': truncation from 'double' to 'float'
-     1>e:\koulu\olio 2\sfml\shooter\shooter\missionsscreen.h(114): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-     1>e:\koulu\olio 2\sfml\shooter\shooter\missionsscreen.h(124): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+         E:\Visual Studio\VC\bin\CL.exe /c /I"E:\SFML-Visual_Studio2015RCx32\include" /ZI /nologo /W3 /WX- /sdl /Od /Oy- /D _MBCS /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"Debug\\" /Fd"Debug\vc140.pdb" /Gd /TP /analyze- /errorReport:prompt Logics.cpp
+         Logics.cpp
+     1>e:\koulu\olio 2\sfml\shooter\shooter\logics.cpp(8): warning C4018: '<': signed/unsigned mismatch
+     1>e:\koulu\olio 2\sfml\shooter\shooter\logics.cpp(18): warning C4018: '<': signed/unsigned mismatch
+     1>e:\koulu\olio 2\sfml\shooter\shooter\logics.cpp(22): warning C4018: '<': signed/unsigned mismatch
+     1>e:\koulu\olio 2\sfml\shooter\shooter\logics.cpp(37): warning C4018: '<': signed/unsigned mismatch
+     1>e:\koulu\olio 2\sfml\shooter\shooter\logics.cpp(43): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+     1>e:\koulu\olio 2\sfml\shooter\shooter\logics.cpp(63): warning C4018: '<': signed/unsigned mismatch
+     1>e:\koulu\olio 2\sfml\shooter\shooter\logics.cpp(73): warning C4018: '<': signed/unsigned mismatch
+     1>e:\koulu\olio 2\sfml\shooter\shooter\logics.cpp(89): warning C4018: '<': signed/unsigned mismatch
+     1>e:\koulu\olio 2\sfml\shooter\shooter\logics.cpp(108): warning C4018: '<': signed/unsigned mismatch
+     1>e:\koulu\olio 2\sfml\shooter\shooter\logics.cpp(109): warning C4018: '<': signed/unsigned mismatch
+     1>e:\koulu\olio 2\sfml\shooter\shooter\logics.cpp(141): warning C4018: '<': signed/unsigned mismatch
+     1>e:\koulu\olio 2\sfml\shooter\shooter\logics.cpp(151): warning C4018: '<': signed/unsigned mismatch
+     1>e:\koulu\olio 2\sfml\shooter\shooter\logics.cpp(152): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+     1>e:\koulu\olio 2\sfml\shooter\shooter\logics.cpp(170): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+     1>e:\koulu\olio 2\sfml\shooter\shooter\logics.cpp(179): warning C4305: 'argument': truncation from 'double' to 'float'
+     1>e:\koulu\olio 2\sfml\shooter\shooter\logics.cpp(213): warning C4715: 'Logics::spawnRandomPowerUp': not all control paths return a value
        Link:
          E:\Visual Studio\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"E:\Koulu\Olio 2\SFML\Shooter\Debug\Shooter.exe" /INCREMENTAL /NOLOGO /LIBPATH:"E:\SFML-Visual_Studio2015RCx32\lib" "sfml-graphics-d.lib" "sfml-audio-d.lib" "sfml-window-d.lib" "sfml-system-d.lib" kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /Debug /PDB:"E:\Koulu\Olio 2\SFML\Shooter\Debug\Shooter.pdb" /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"E:\Koulu\Olio 2\SFML\Shooter\Debug\Shooter.lib" /MACHINE:X86 Debug\Bullet.obj
          Debug\Drone.obj
@@ -29,6 +28,7 @@
          Debug\Loader.obj
          Debug\Logics.obj
          Debug\Marauder.obj
+         Debug\Missile.obj
          Debug\Player.obj
          Debug\Powerups.obj
          Debug\Source.obj
@@ -37,4 +37,4 @@
 
 Build succeeded.
 
-Time Elapsed 00:00:01.15
+Time Elapsed 00:00:01.87

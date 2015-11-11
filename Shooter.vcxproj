@@ -132,6 +132,7 @@
     <ClCompile Include="Loader.cpp" />
     <ClCompile Include="Logics.cpp" />
     <ClCompile Include="Marauder.cpp" />
+    <ClCompile Include="Missile.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="Powerups.cpp" />
     <ClCompile Include="Source.cpp" />
@@ -149,6 +150,7 @@
     <ClInclude Include="Logics.h" />
     <ClInclude Include="Marauder.h" />
     <ClInclude Include="MenuScreen.h" />
+    <ClInclude Include="Missile.h" />
     <ClInclude Include="MissionsScreen.h" />
     <ClInclude Include="OptionsScreen.h" />
     <ClInclude Include="Player.h" />

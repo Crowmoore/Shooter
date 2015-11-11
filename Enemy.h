@@ -5,6 +5,7 @@
 #include "Player.h"
 #include "Bullet.h"
 #include "Loader.h"
+#include "Missile.h"
 
 using namespace std;
 
@@ -12,9 +13,8 @@ class Enemy : public sf::Sprite {
 public:
 	Enemy();
 	~Enemy();
-	Enemy(string, sf::Texture *, sf::Vector2f);
 	virtual float calculateRotation(sf::RenderWindow &, Player &) = 0;
-	virtual void shoot(sf::RenderWindow &, Player &, vector <Enemy *> &, vector <Bullet *> &) = 0;
+	virtual void shoot(sf::RenderWindow &, Player &, vector <Enemy *> &, vector <Bullet *> &, vector <Missile *> &) = 0;
 	virtual void animate() = 0;
 	void draw(sf::RenderWindow &window);
 	int getScore();

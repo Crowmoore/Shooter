@@ -7,7 +7,6 @@ public:
 	~Explosion();
 
 	void explode(sf::RenderWindow &);
-	void draw(sf::RenderWindow &);
 	bool getExploded();
 	void setExploded(bool);
 private:

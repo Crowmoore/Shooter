@@ -17,6 +17,7 @@
 #include "Loader.h"
 #include "Screen.h"
 #include "Explosion.h"
+#include "Missile.h"
 #include <stdlib.h>
 
 class Level1 : public Screen {
@@ -36,6 +37,7 @@ public:
 	vector <Bullet *> bullets;
 	vector <Explosion *> explosions;
 	vector <Powerups *> powerups;
+	vector <Missile *> missiles;
 	Loader loader;
 	Logics logics;
 	GameState gameState;
@@ -145,6 +147,7 @@ int Level1::run(sf::RenderWindow &window) {
 					bullets.clear();
 					explosions.clear();
 					powerups.clear();
+					missiles.clear();
 					this->isRunning = false;
 					return 0;
 				}
@@ -158,6 +161,7 @@ int Level1::run(sf::RenderWindow &window) {
 						bullets.clear();
 						explosions.clear();
 						powerups.clear();
+						missiles.clear();
 						this->isRunning = false;
 						return 0;
 					}
@@ -209,7 +213,7 @@ int Level1::run(sf::RenderWindow &window) {
 			player.checkHealth(heartbeat);
 			player.draw(window);
 
-			logics.updateEnemies(window, player, enemies, bullets);
+			logics.updateEnemies(window, player, enemies, bullets, missiles);
 			logics.resolveCollisions(enemies, player);
 			logics.updatePowerups(window, powerups, player, ding);
 
@@ -273,6 +277,7 @@ int Level1::run(sf::RenderWindow &window) {
 				
 			}
 			logics.updateExplosions(window, explosions);
+			logics.updateMissiles(window, player, missiles, bullets);
 		}
 		if (gameState.getGameState() == 1) {
 			this->drawHUD(font, bounds, window, waveCount);
