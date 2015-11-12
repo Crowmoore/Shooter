@@ -146,6 +146,7 @@
     <ClInclude Include="GameState.h" />
     <ClInclude Include="Globals.h" />
     <ClInclude Include="Level1.h" />
+    <ClInclude Include="Level2.h" />
     <ClInclude Include="Loader.h" />
     <ClInclude Include="Logics.h" />
     <ClInclude Include="Marauder.h" />

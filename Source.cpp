@@ -17,6 +17,8 @@ int main()
 	screens.push_back(&menu);
 	Level1 level1;
 	screens.push_back(&level1);
+	Level2 level2;
+	screens.push_back(&level2);
 	OptionsScreen options;
 	screens.push_back(&options);
 	PointsScreen points;

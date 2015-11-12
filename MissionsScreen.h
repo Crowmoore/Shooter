@@ -31,9 +31,9 @@ int MissionsScreen::run(sf::RenderWindow &window) {
 	missionSelect.setCharacterSize(60);
 	missionSelect.setPosition(view.getSize().x / 2 - missionSelect.getLocalBounds().width / 2, 20);
 
-	sf::Text highscore1("Highscore: " + to_string(level1Highscore), font);
-	highscore1.setCharacterSize(40);
-	highscore1.setPosition(view.getSize().x / 2 - highscore1.getLocalBounds().width / 2, 900);
+	sf::Text highscore;
+	highscore.setFont(font);
+	highscore.setCharacterSize(40);
 
 	sf::Text mission1("Pacify the Alpha Quadrant", font);
 	mission1.setCharacterSize(40);
@@ -82,10 +82,13 @@ int MissionsScreen::run(sf::RenderWindow &window) {
 					return 0;
 				}
 				if (sf::Keyboard::isKeyPressed(sf::Keyboard::Return) || sf::Keyboard::isKeyPressed(sf::Keyboard::E)) {
+					this->isRunning = false;
+					music.pause();
 					if (selection == 0) {
-						this->isRunning = false;
-						music.pause();
 						return 1;
+					}
+					else {
+						return 2;
 					}
 				}
 				if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right) || sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {
@@ -114,20 +117,25 @@ int MissionsScreen::run(sf::RenderWindow &window) {
 			mission1Spr.setPosition(view.getSize().x / 2 - mission1Spr.getTextureRect().width * 0.2 / 2, 400);
 			missionBorder.setFillColor(sf::Color::Red);
 			missionBorder.setPosition(mission1Spr.getPosition().x - 4, mission1Spr.getPosition().y - 4);
+			highscore.setString("Highscore: " + to_string(highscores[0]));
+			highscore.setPosition(view.getSize().x / 2 - highscore.getLocalBounds().width / 2, 900);
 			window.draw(mission1);
 			window.draw(missionBorder);
 			window.draw(mission1Spr);
 			window.draw(mission1Description);
-			window.draw(highscore1);
+			window.draw(highscore);
 			break;
 		case 1:
 			mission2Spr.setPosition(view.getSize().x / 2 - mission2Spr.getTextureRect().width * 0.2 / 2, 400);
 			missionBorder.setFillColor(sf::Color::Red);
 			missionBorder.setPosition(mission2Spr.getPosition().x - 4, mission2Spr.getPosition().y - 4);
+			highscore.setString("Highscore: " + to_string(highscores[1]));
+			highscore.setPosition(view.getSize().x / 2 - highscore.getLocalBounds().width / 2, 900);
 			window.draw(mission2);
 			window.draw(missionBorder);
 			window.draw(mission2Spr);
 			window.draw(mission2Description);
+			window.draw(highscore);
 			break;
 		}		
 		window.display();

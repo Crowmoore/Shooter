@@ -3,7 +3,7 @@
 Loader::Loader() {}
 Loader::~Loader() {}
 
-//Try to load font from the given file path.
+//Try to load a font from the given file path.
 sf::Font Loader::loadFont(string path) {
 	sf::Font font;
 	try {
@@ -14,7 +14,7 @@ sf::Font Loader::loadFont(string path) {
 	}
 	return font;
 }
-
+//Try to load a texture.
 sf::Texture Loader::loadTexture(string path) {
 	sf::Texture texture;
 	try {
@@ -45,14 +45,14 @@ void Loader::createSaveFile() {
 		cout << "Could not close file " << filename << " Exception " << ex.what() << endl;
 	}
 }
-//Save highscore to binary file. If a file cannot be opened or it doesn't exist, call the createSaveFile function.
-void Loader::saveHighscoreToFile(int score) {
+//Save highscores to binary file from a vector. If a file cannot be opened or it doesn't exist, call the createSaveFile function.
+void Loader::saveHighscoreToFile(vector <int> highscores) {
 	string filename = "score.bin";
 	fstream stream;
 	stream.exceptions(fstream::failbit | fstream::badbit);
 	try {
 		stream.open(filename, ios_base::out | ios_base::binary);
-		stream.write((char*)&score, sizeof(score));
+		stream.write((char*)&highscores[0], highscores.size() * sizeof(int));
 		cout << "File " << filename << " opened succesfully." << endl;
 	}
 	catch (fstream::failure &e) {
@@ -103,15 +103,17 @@ sf::Sound Loader::loadSound(string path)
 	sound.setBuffer(*buffer);
 	return sound;
 }
-//Try to read previous highscore from a binary file and return it.
-int Loader::loadHighscoreFromFile() {
+//Try to read the highscores from a binary file into a vector and return it.
+vector <int> Loader::loadHighscoreFromFile() {
 	string filename = "score.bin";
 	fstream stream;
 	stream.exceptions(fstream::failbit | fstream::badbit);
 	int score = 0;
+	vector <int> highscores;
+	highscores.resize(2);
 	try {
 		stream.open(filename, ios_base::in | ios_base::binary);
-		stream.read((char*)&score, sizeof(score));
+		stream.read((char*)&highscores[0], highscores.size() * sizeof(int));
 		cout << "File " << filename << " opened succesfully." << endl;
 	}
 	catch (fstream::failure &e) {
@@ -125,5 +127,5 @@ int Loader::loadHighscoreFromFile() {
 	catch (fstream::failure &ex) {
 		cout << "Could not close file " << filename << " Exception " << ex.what() << endl;
 	}
-	return score;
+	return highscores;
 }

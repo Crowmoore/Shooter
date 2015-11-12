@@ -4,6 +4,8 @@
 #include <SFML\Graphics.hpp>
 #include <SFML\Audio.hpp>
 #include <fstream>
+#include <vector>
+
 
 using namespace std;
 
@@ -15,8 +17,8 @@ public:
 	sf::Font loadFont(string);
 	sf::Image loadImage(string);
 	sf::Sound loadSound(string);
-	void saveHighscoreToFile(int score);
+	void saveHighscoreToFile(vector <int>);
 	void loadMusic(string);
 	void createSaveFile();
-	int loadHighscoreFromFile();
+	vector <int> loadHighscoreFromFile();
 };

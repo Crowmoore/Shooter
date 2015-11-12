@@ -198,7 +198,7 @@ void Player::update(sf::RenderWindow &window, vector <Bullet *> &bullets, sf::So
 		this->velocity.x -= this->acceleration;
 	}
 	if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
-		if (fireRateTimer.getElapsedTime().asSeconds() >= this->rateOfFire) {
+		if (fireRateTimer.getElapsedTime().asSeconds() >= this->rateOfFire && this->alive) {
 			this->shoot(window, bullets, laser);
 			fireRateTimer.restart();
 		}

@@ -92,9 +92,19 @@ int PointsScreen::run(sf::RenderWindow &window) {
 		if (totalCount == totalPoints) {
 			pointsCounted = true;
 		}
-		if (totalPoints > level1Highscore && pointsCounted != false && highscoreSaved != true) {
-			loader.saveHighscoreToFile(totalPoints);
-			highscoreSaved = true;
+		if (currentLevel == 1) {
+			if (totalPoints > highscores[0] && pointsCounted != false && highscoreSaved != true) {
+				highscores[0] = totalPoints;
+				loader.saveHighscoreToFile(highscores);
+				highscoreSaved = true;
+			}
+		}
+		else {
+			if (totalPoints > highscores[1] && pointsCounted != false && highscoreSaved != true) {
+				highscores[1] = totalPoints;
+				loader.saveHighscoreToFile(highscores);
+				highscoreSaved = true;
+			}
 		}
 		sf::Text total("Total: " + to_string(totalCount), font);
 		total.setCharacterSize(50);

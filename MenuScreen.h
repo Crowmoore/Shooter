@@ -38,7 +38,7 @@ int MenuScreen::run(sf::RenderWindow &window) {
 	logoSprite.setTexture(logoTex);
 	logoSprite.setPosition(view.getSize().x / 2 - logoSprite.getLocalBounds().width / 2, 10);
 	
-	level1Highscore = loader.loadHighscoreFromFile();
+	highscores = loader.loadHighscoreFromFile();
 
 	sf::Sound clip = loader.loadSound("assets/sounds/clip.wav");
 
@@ -83,10 +83,10 @@ int MenuScreen::run(sf::RenderWindow &window) {
 				}
 				if (sf::Keyboard::isKeyPressed(sf::Keyboard::Return) || sf::Keyboard::isKeyPressed(sf::Keyboard::E)) {
 					if (selection == 0) {
-						return 4;
+						return 5;
 					}
 					else if(selection == 1){
-						return 2;
+						return 3;
 					}
 					else {
 						return -1;
