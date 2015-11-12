@@ -11,7 +11,6 @@ class Loader {
 public:
 	Loader();
 	~Loader();
-
 	sf::Texture loadTexture(string);
 	sf::Font loadFont(string);
 	sf::Image loadImage(string);

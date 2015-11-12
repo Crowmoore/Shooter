@@ -30,6 +30,12 @@ public:
 	void enemyWaves(int);
 	void drawHUD(sf::Font, sf::FloatRect, sf::RenderWindow &window, int waveCount);
 	void initPlayer(Player &);
+	void initLevel();
+	void pauseScreenUpdate();
+	void pauseGame();
+	void endLevel();
+	void missionFailed(sf::RenderWindow &);
+	void missionSuccesfull(sf::RenderWindow &);
 
 	Player player;
 	sf::View view;
@@ -48,75 +54,33 @@ public:
 	sf::FloatRect bounds;
 	sf::Clock statusTimer;
 	bool statusTimerIsOn;
-};
-Level1::Level1() {	
-
-}
-
-int Level1::run(sf::RenderWindow &window) {	
-	this->view.reset(sf::FloatRect(0, 0, 1920, 1080));
-
-	loader.loadMusic("assets/sounds/Drums_of_the_Deep.ogg");
-	music.setVolume(musicVolume);
-	music.play();
-
-	sf::Font font(loader.loadFont("assets/fonts/space_age.ttf"));
-
-	explosionTex = loader.loadTexture("assets/pics/explosion.png");
-
-	sf::Sound laser = loader.loadSound("assets/sounds/laser.wav");
-	sf::Sound explosion = loader.loadSound("assets/sounds/explosion.wav");
-	sf::Sound heartbeat = loader.loadSound("assets/sounds/heartbeat.wav");
-	sf::Sound ding = loader.loadSound("assets/sounds/ding.wav");
-
-	explosion.setVolume(10);
-	laser.setVolume(5);
-	heartbeat.setVolume(90);
-	ding.setVolume(10);
-
+	sf::Sound laser;
+	sf::Sound explosion;
+	sf::Sound heartbeat;
+	sf::Sound ding;
+	sf::Texture bgTex;
+	sf::Font font;
 	sf::Clock enemySpawnTimer;
 	sf::Clock waveTimer;
 	sf::Clock fireRateTimer;
-	statusTimerIsOn = false;
-
-	int enemySpawnInterval = 3;
-	int waveInterval = 10;
-
-	if (this->isRunning != true) {
-		this->initPlayer(player);
-		this->waveCount = 1;
-	}
-
-	window.setFramerateLimit(60);
-
-	bounds = getViewBounds(this->view);
-
-	sf::Texture bgTex(loader.loadTexture("assets/pics/bg_space.jpg"));
-	bgSprite.setTexture(bgTex);
-
-	sf::Texture cursorTex(loader.loadTexture("assets/pics/cursor.png"));
-	cursorTex.setSmooth(true);
-	cursor.setTexture(cursorTex);
-	cursor.setOrigin(cursor.getLocalBounds().width / 2, cursor.getLocalBounds().height / 2);
-
-	sf::Text paused("Paused", font);
-	sf::Text resume("Resume", font);
-	sf::Text exit("Exit to Main menu", font);
-	int selection = 0;
-
+	sf::Texture cursorTex;
+	sf::Text paused;
+	sf::Text resume;
+	sf::Text exit;
+	int enemySpawnInterval;
+	int waveInterval;
 	sf::SoundBuffer clipBuffer;
-	clipBuffer.loadFromFile("assets/sounds/clip.wav");
 	sf::Sound clip;
-	clip.setBuffer(clipBuffer);
+	sf::Text death;
+	sf::Text victory;
+	int selection;
+};
+Level1::Level1() {}
 
-	paused.setCharacterSize(90);
-	paused.setPosition(view.getSize().x / 2 - paused.getLocalBounds().width / 2, 20);
+int Level1::run(sf::RenderWindow &window) {	
 
-	resume.setCharacterSize(60);
-	resume.setPosition(view.getSize().x / 2 - resume.getLocalBounds().width / 2, 500);
-
-	exit.setCharacterSize(60);
-	exit.setPosition(view.getSize().x / 2 - exit.getLocalBounds().width / 2, 600);
+	initLevel();
+	window.setFramerateLimit(60);
 
 
 	this->isRunning = true;
@@ -124,7 +88,6 @@ int Level1::run(sf::RenderWindow &window) {
 
 	while (this->isRunning)
 	{
-
 		player.setShielded(false);
 		sf::Event event;
 		while (window.pollEvent(event))
@@ -134,35 +97,14 @@ int Level1::run(sf::RenderWindow &window) {
 				break;
 			case sf::Event::KeyPressed:
 				if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)) {
-					if (gameState.getGameState() == 1) {
-						gameState.setGameState(0);
-					}
-					else {
-						gameState.setGameState(1);
-					}
-				}
-				if (sf::Keyboard::isKeyPressed(sf::Keyboard::Return) && player.getHealth() == 0) {
-					music.pause();
-					enemies.clear();
-					bullets.clear();
-					explosions.clear();
-					powerups.clear();
-					missiles.clear();
-					this->isRunning = false;
-					return 0;
+					pauseGame();
 				}
 				if (sf::Keyboard::isKeyPressed(sf::Keyboard::Return) && gameState.getGameState() == 0 || sf::Keyboard::isKeyPressed(sf::Keyboard::E) && gameState.getGameState() == 0) {
 					if (selection == 0) {
 						gameState.setGameState(1);
 					}
 					else {
-						music.pause();
-						enemies.clear();
-						bullets.clear();
-						explosions.clear();
-						powerups.clear();
-						missiles.clear();
-						this->isRunning = false;
+						endLevel();
 						return 0;
 					}
 					break;
@@ -178,20 +120,6 @@ int Level1::run(sf::RenderWindow &window) {
 					break;
 				}
 			}
-			if (selection < 0) {
-				selection = 1;
-			}
-			else if (selection > 1) {
-				selection = 0;
-			}
-			if (selection == 0) {
-				resume.setColor(sf::Color(255, 0, 0, 255));
-				exit.setColor(sf::Color(255, 255, 255, 255));
-			}
-			else {
-				resume.setColor(sf::Color(255, 255, 255, 255));
-				exit.setColor(sf::Color(255, 0, 0, 255));
-			}
 		if (gameState.getGameState() == 0) {
 			window.clear();
 			window.draw(paused);
@@ -200,10 +128,15 @@ int Level1::run(sf::RenderWindow &window) {
 			window.display();
 		}
 
+		pauseScreenUpdate();
+
 		if (gameState.getGameState() == 1) {
 			window.clear();
 			window.setView(view);
 			window.draw(bgSprite);
+
+			cursor.setPosition((sf::Vector2f)(window.mapPixelToCoords(sf::Mouse::getPosition(window))));
+
 			player.adjustVelocity();
 			player.checkBounds(player, bounds);
 			player.update(window, bullets, laser, bounds, fireRateTimer);
@@ -216,8 +149,11 @@ int Level1::run(sf::RenderWindow &window) {
 			logics.updateEnemies(window, player, enemies, bullets, missiles);
 			logics.resolveCollisions(enemies, player);
 			logics.updatePowerups(window, powerups, player, ding);
-
-			cursor.setPosition((sf::Vector2f)(window.mapPixelToCoords(sf::Mouse::getPosition(window))));
+			logics.updateExplosions(window, explosions);
+			logics.updateMissiles(window, player, missiles, bullets);
+			logics.resolveBulletHitsOnPlayer(window, bullets, player, explosion, explosions, &explosionTex);
+			logics.destroyOutOfBoundsBullets(bullets, bounds);
+			logics.resolveBulletHitsOnEnemy(window, bullets, enemies, player, explosion, powerups, explosions, &explosionTex);
 
 			if (enemySpawnTimer.getElapsedTime().asSeconds() >= enemySpawnInterval && waveCount < 4) {
 				this->enemyWaves(waveCount);
@@ -228,62 +164,24 @@ int Level1::run(sf::RenderWindow &window) {
 				waveCount++;
 			}
 			if (waveCount == 4 && enemies.size() == 0) {
-				sf::Text victory("Victory!", font);
-				victory.setColor(sf::Color::White);
-				victory.setStyle(sf::Text::Bold);
-				victory.setCharacterSize(100);
-				victory.setPosition(bounds.width / 2 - victory.getLocalBounds().width / 2, bounds.height / 2 - victory.getLocalBounds().height / 2);
-				window.draw(victory);
-				
-				if (statusTimerIsOn != true) {
-					statusTimer.restart();
-					statusTimerIsOn = true;
-				}
+				missionSuccesfull(window);
 				if (statusTimer.getElapsedTime().asSeconds() > 3) {
 					survivalBonus = player.getHealth() * 2;
-					powerups.clear();
-					bullets.clear();
-					this->isRunning = false;
+					endLevel();
 					return 3;
 				}
 			}
 			if (player.getAlive() != true) {
-				sf::Text death("Mission failed", font);
-				death.setColor(sf::Color::White);
-				death.setStyle(sf::Text::Bold);
-				death.setCharacterSize(100);
-				death.setPosition(bounds.width / 2 - death.getLocalBounds().width / 2, bounds.height / 2 - death.getLocalBounds().height / 2);
-				window.draw(death);
-				if (statusTimerIsOn != true) {
-					statusTimer.restart();
-					statusTimerIsOn = true;
-				}
+				missionFailed(window);
 				if (statusTimer.getElapsedTime().asSeconds() > 3) {
-					powerups.clear();
-					enemies.clear();
-					explosions.clear();
-					bullets.clear();
-					music.pause();
-					this->isRunning = false;
+					heartbeat.stop();
+					endLevel();
 					return 0;
 				}
 			}
-			
-
-			if (bullets.size() != 0) {
-				logics.resolveBulletHitsOnPlayer(window, bullets, player, explosion, explosions, &explosionTex);
-				logics.destroyOutOfBoundsBullets(bullets, bounds);
-				logics.resolveBulletHitsOnEnemy(window, bullets, enemies, player, explosion, powerups, explosions, &explosionTex);
-				
-			}
-			logics.updateExplosions(window, explosions);
-			logics.updateMissiles(window, player, missiles, bullets);
-		}
-		if (gameState.getGameState() == 1) {
 			this->drawHUD(font, bounds, window, waveCount);
 			window.display();
 		}
-
 	}
 	return -1;
 
@@ -340,6 +238,33 @@ void Level1::spawnEnemies(int direction) {
 	}
 
 }
+void Level1::missionSuccesfull(sf::RenderWindow &window) {
+	victory.setString("Victory!");
+	victory.setFont(font);
+	victory.setColor(sf::Color::White);
+	victory.setStyle(sf::Text::Bold);
+	victory.setCharacterSize(100);
+	victory.setPosition(bounds.width / 2 - victory.getLocalBounds().width / 2, bounds.height / 2 - victory.getLocalBounds().height / 2);
+	window.draw(victory);
+
+	if (statusTimerIsOn != true) {
+		statusTimer.restart();
+		statusTimerIsOn = true;
+	}
+}
+void Level1::missionFailed(sf::RenderWindow &window) {
+	death.setString("Mission failed");
+	death.setFont(font);
+	death.setColor(sf::Color::White);
+	death.setStyle(sf::Text::Bold);
+	death.setCharacterSize(100);
+	death.setPosition(bounds.width / 2 - death.getLocalBounds().width / 2, bounds.height / 2 - death.getLocalBounds().height / 2);
+	window.draw(death);
+	if (statusTimerIsOn != true) {
+		statusTimer.restart();
+		statusTimerIsOn = true;
+	}
+}
 sf::FloatRect Level1::getViewBounds(const sf::View view)
 {
 	sf::FloatRect bounds;
@@ -348,6 +273,23 @@ sf::FloatRect Level1::getViewBounds(const sf::View view)
 	bounds.width = view.getSize().x;
 	bounds.height = view.getSize().y;
 	return bounds;
+}
+void Level1::endLevel() {
+	music.pause();
+	enemies.clear();
+	bullets.clear();
+	explosions.clear();
+	powerups.clear();
+	missiles.clear();
+	this->isRunning = false;
+}
+void Level1::pauseGame() {
+	if (gameState.getGameState() == 1) {
+		gameState.setGameState(0);
+	}
+	else {
+		gameState.setGameState(1);
+	}
 }
 void Level1::enemyWaves(int waveCount) {
 	switch (waveCount) {
@@ -410,6 +352,7 @@ void Level1::drawHUD(sf::Font font, sf::FloatRect bounds, sf::RenderWindow &wind
 		window.draw(wave);
 	}
 }
+
 void Level1::initPlayer(Player &player) {
 	points = 0;
 	player.setAlive(true);
@@ -420,4 +363,84 @@ void Level1::initPlayer(Player &player) {
 	player.setVelocity(sf::Vector2f(0, 0));
 	player.setAmmoDescription("Red Rays of Happiness");
 	player.setRateOfFire(0.2);
+}
+void Level1::pauseScreenUpdate() {
+	if (selection < 0) {
+		selection = 1;
+	}
+	else if (selection > 1) {
+		selection = 0;
+	}
+	if (selection == 0) {
+		resume.setColor(sf::Color(255, 0, 0, 255));
+		exit.setColor(sf::Color(255, 255, 255, 255));
+	}
+	else {
+		resume.setColor(sf::Color(255, 255, 255, 255));
+		exit.setColor(sf::Color(255, 0, 0, 255));
+	}
+}
+void Level1::initLevel() {
+	this->view.reset(sf::FloatRect(0, 0, 1920, 1080));
+
+	loader.loadMusic("assets/sounds/Drums_of_the_Deep.ogg");
+	music.setVolume(musicVolume);
+	music.play();
+
+	laser = loader.loadSound("assets/sounds/laser.wav");
+	explosion = loader.loadSound("assets/sounds/explosion.wav");
+	heartbeat = loader.loadSound("assets/sounds/heartbeat.wav");
+	ding = loader.loadSound("assets/sounds/ding.wav");
+
+	explosion.setVolume(10);
+	laser.setVolume(5);
+	heartbeat.setVolume(90);
+	ding.setVolume(10);
+
+	bgTex = loader.loadTexture("assets/pics/bg_space.jpg");
+	bgSprite.setTexture(bgTex);
+
+	font = loader.loadFont("assets/fonts/space_age.ttf");
+
+	explosionTex = loader.loadTexture("assets/pics/explosion.png");
+
+	cursorTex = loader.loadTexture("assets/pics/cursor.png");
+	cursorTex.setSmooth(true);
+	cursor.setTexture(cursorTex);
+	cursor.setOrigin(cursor.getLocalBounds().width / 2, cursor.getLocalBounds().height / 2);
+
+	paused.setString("Paused");
+	paused.setFont(font);
+	resume.setString("Resume");
+	resume.setFont(font);
+	exit.setString("Exit");
+	exit.setFont(font);
+
+	paused.setCharacterSize(90);
+	paused.setPosition(view.getSize().x / 2 - paused.getLocalBounds().width / 2, 20);
+
+	resume.setCharacterSize(60);
+	resume.setPosition(view.getSize().x / 2 - resume.getLocalBounds().width / 2, 500);
+
+	exit.setCharacterSize(60);
+	exit.setPosition(view.getSize().x / 2 - exit.getLocalBounds().width / 2, 600);
+
+	bounds = getViewBounds(this->view);
+
+	statusTimerIsOn = false;
+
+	enemySpawnInterval = 3;
+	waveInterval = 10;
+
+	int selection = 0;
+
+	clipBuffer.loadFromFile("assets/sounds/clip.wav");
+	clip.setBuffer(clipBuffer);
+
+	if (this->isRunning != true) {
+		this->initPlayer(player);
+		this->waveCount = 1;
+	}
+
+	
 }

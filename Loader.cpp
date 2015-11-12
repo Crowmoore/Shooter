@@ -34,14 +34,14 @@ void Loader::createSaveFile() {
 		stream.open(filename, ios_base::out | ios_base::binary);
 		cout << "New file created." << endl;
 	}
-	catch (fstream::failure e) {
+	catch (fstream::failure &e) {
 		cout << "Could not open file " << filename << " Exception " << e.what() << endl;
 	}
 	try {
 		stream.close();
 		cout << "File " << filename << " closed succesfully." << endl;
 	}
-	catch (fstream::failure ex) {
+	catch (fstream::failure &ex) {
 		cout << "Could not close file " << filename << " Exception " << ex.what() << endl;
 	}
 }
