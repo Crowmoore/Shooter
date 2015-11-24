@@ -1,29 +1,10 @@
 #pragma once
-#include "Screen.h"
-#include "Loader.h"
-#include <SFML\Graphics.hpp>
-#include <SFML\Audio.hpp>
-#include "Bullet.h"
-#include "Player.h"
-#include <iostream>
-#include <math.h>
-#include <vector>
-#include "Enemy.h"
-#include "Marauder.h"
-#include "Drone.h"
-#include "GameState.h"
-#include "Logics.h"
-#include "Powerups.h"
-#include "Loader.h"
-#include "Screen.h"
-#include "Explosion.h"
-#include "Missile.h"
-#include <stdlib.h>
+#include "resources.h"
 
-class Level2 : public Screen {
+class Level1 : public Screen {
 public:
-	Level2();
-	~Level2() {}
+	Level1();
+	~Level1() {}
 	virtual int run(sf::RenderWindow &window);
 	void spawnEnemies(int);
 	sf::FloatRect getViewBounds(const sf::View view);
@@ -31,11 +12,11 @@ public:
 	void drawHUD(sf::Font, sf::FloatRect, sf::RenderWindow &window, int waveCount);
 	void initPlayer(Player &);
 	void initLevel();
-	void drawPauseScreen(sf::RenderWindow &);
 	void pauseGame();
 	void endLevel();
 	void missionFailed(sf::RenderWindow &);
 	void missionSuccesfull(sf::RenderWindow &);
+	void drawPauseScreen(sf::RenderWindow &);
 
 private:
 	Player player;
@@ -72,17 +53,18 @@ private:
 	vector <Powerups *> powerups;
 	vector <Missile *> missiles;
 };
-Level2::Level2() {}
+Level1::Level1() {}
 
-int Level2::run(sf::RenderWindow &window) {
+int Level1::run(sf::RenderWindow &window) {	
 
 	initLevel();
+	initPlayer(player);
 	window.setFramerateLimit(60);
 
 
 	this->isRunning = true;
 	gameState.setGameState(1);
-
+	//Start the main game loop
 	while (this->isRunning)
 	{
 		player.setShielded(false);
@@ -93,21 +75,26 @@ int Level2::run(sf::RenderWindow &window) {
 				window.close();
 				break;
 			case sf::Event::KeyPressed:
+				//Pause the game
 				if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)) {
 					pauseGame();
 				}
+				//Pause menu controls
 				if (sf::Keyboard::isKeyPressed(sf::Keyboard::Return) && gameState.getGameState() == 0 || sf::Keyboard::isKeyPressed(sf::Keyboard::E) && gameState.getGameState() == 0) {
+					//Resume the game
 					if (selection == 0) {
 						gameState.setGameState(1);
 					}
+					//Exit to main menu
 					else {
 						endLevel();
 						return 0;
 					}
 					break;
 				}
+				//Select pause menu options
 				if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up) && gameState.getGameState() == 0 || sf::Keyboard::isKeyPressed(sf::Keyboard::W) && gameState.getGameState() == 0) {
-					clip.play();
+					clip.play();		
 					selection -= 1;
 					break;
 				}
@@ -117,13 +104,14 @@ int Level2::run(sf::RenderWindow &window) {
 					break;
 				}
 			}
+
 		if (gameState.getGameState() == 1) {
 			window.clear();
 			window.setView(view);
 			window.draw(bgSprite);
 
+			//Update everything player related
 			cursor.setPosition((sf::Vector2f)(window.mapPixelToCoords(sf::Mouse::getPosition(window))));
-
 			player.adjustVelocity();
 			player.checkBounds(player, bounds);
 			player.update(window, bullets, laser, bounds, fireRateTimer);
@@ -133,6 +121,7 @@ int Level2::run(sf::RenderWindow &window) {
 			player.checkHealth(heartbeat);
 			player.draw(window);
 
+			//Update everything else on the screen
 			logics.updateEnemies(window, player, enemies, bullets, missiles);
 			logics.resolveCollisions(enemies, player);
 			logics.updatePowerups(window, powerups, player, ding);
@@ -142,15 +131,18 @@ int Level2::run(sf::RenderWindow &window) {
 			logics.destroyOutOfBoundsBullets(bullets, bounds);
 			logics.resolveBulletHitsOnEnemy(window, bullets, enemies, player, explosion, powerups, explosions, &explosionTex);
 
-			if (enemySpawnTimer.getElapsedTime().asSeconds() >= enemySpawnInterval && waveCount < 10) {
-				this->enemyWaves(waveCount);
+			//Check if it's time to spawn a new enemy
+			if (enemySpawnTimer.getElapsedTime().asSeconds() >= enemySpawnInterval && waveCount < 4) {
+				enemyWaves(waveCount);
 				enemySpawnTimer.restart();
 			}
-			if (waveTimer.getElapsedTime().asSeconds() >= waveInterval && waveCount < 10) {
+			//Check if it's time to move to a next enemy wave
+			if (waveTimer.getElapsedTime().asSeconds() >= waveInterval && waveCount < 4) {
 				waveTimer.restart();
 				waveCount++;
 			}
-			if (waveCount == 10 && enemies.size() == 0) {
+			//Check is the player has survived all waves and cleared all enemies. End level with a success
+			if (waveCount == 4 && enemies.size() == 0) {
 				missionSuccesfull(window);
 				if (statusTimer.getElapsedTime().asSeconds() > 3) {
 					survivalBonus = player.getHealth() * 2;
@@ -159,6 +151,7 @@ int Level2::run(sf::RenderWindow &window) {
 					return 4;
 				}
 			}
+			//If the player has died, end level in failure.
 			if (player.getAlive() != true) {
 				missionFailed(window);
 				if (statusTimer.getElapsedTime().asSeconds() > 3) {
@@ -167,19 +160,23 @@ int Level2::run(sf::RenderWindow &window) {
 					return 0;
 				}
 			}
-			this->drawHUD(font, bounds, window, waveCount);
+			drawHUD(font, bounds, window, waveCount);
 			window.display();
 		}
+		//if gamestate is 0, draw the pause screen
 		else {
 			window.clear();
 			drawPauseScreen(window);
 			window.display();
 		}
+		
 	}
+	//This is here just in case. We should never find ourselves here
 	return -1;
 
 }
-void Level2::spawnEnemies(int direction) {
+//Spawn random enemies from random locations on a specific side of the screen
+void Level1::spawnEnemies(int direction) {
 	int randomSpawnX = rand() % (int)view.getSize().x;
 	int randomSpawnY = rand() % (int)view.getSize().y;
 	int randomEnemy = rand() % 5 + 1;
@@ -231,7 +228,8 @@ void Level2::spawnEnemies(int direction) {
 	}
 
 }
-void Level2::missionSuccesfull(sf::RenderWindow &window) {
+//Draw the mission successfull notification
+void Level1::missionSuccesfull(sf::RenderWindow &window) {
 	victory.setString("Victory!");
 	victory.setFont(font);
 	victory.setColor(sf::Color::White);
@@ -245,7 +243,8 @@ void Level2::missionSuccesfull(sf::RenderWindow &window) {
 		statusTimerIsOn = true;
 	}
 }
-void Level2::missionFailed(sf::RenderWindow &window) {
+//Draw the mission failed notification
+void Level1::missionFailed(sf::RenderWindow &window) {
 	death.setString("Mission failed");
 	death.setFont(font);
 	death.setColor(sf::Color::White);
@@ -258,7 +257,8 @@ void Level2::missionFailed(sf::RenderWindow &window) {
 		statusTimerIsOn = true;
 	}
 }
-sf::FloatRect Level2::getViewBounds(const sf::View view)
+//Get the view borders as a sf::FloatRect
+sf::FloatRect Level1::getViewBounds(const sf::View view)
 {
 	sf::FloatRect bounds;
 	bounds.left = view.getCenter().x - view.getSize().x / 2.f;
@@ -267,7 +267,8 @@ sf::FloatRect Level2::getViewBounds(const sf::View view)
 	bounds.height = view.getSize().y;
 	return bounds;
 }
-void Level2::endLevel() {
+//End the level by clearing everything
+void Level1::endLevel() {
 	music.pause();
 	enemies.clear();
 	bullets.clear();
@@ -276,7 +277,8 @@ void Level2::endLevel() {
 	missiles.clear();
 	this->isRunning = false;
 }
-void Level2::pauseGame() {
+//Pause/unpause the game
+void Level1::pauseGame() {
 	if (gameState.getGameState() == 1) {
 		gameState.setGameState(0);
 	}
@@ -284,7 +286,8 @@ void Level2::pauseGame() {
 		gameState.setGameState(1);
 	}
 }
-void Level2::enemyWaves(int waveCount) {
+//Spawn enemies based on wavecount. Different cases determine where the enemies will spawn
+void Level1::enemyWaves(int waveCount) {
 	switch (waveCount) {
 	case 1:
 		spawnEnemies(2);
@@ -304,17 +307,10 @@ void Level2::enemyWaves(int waveCount) {
 		spawnEnemies(1);
 		spawnEnemies(3);
 		break;
-	default:
-		spawnEnemies(2);
-		spawnEnemies(4);
-		spawnEnemies(1);
-		spawnEnemies(3);
-		break;
 	}
-	
 }
-
-void Level2::drawHUD(sf::Font font, sf::FloatRect bounds, sf::RenderWindow &window, int waveCount) {
+//Draw the head-up display
+void Level1::drawHUD(sf::Font font, sf::FloatRect bounds, sf::RenderWindow &window, int waveCount) {
 	sf::Text ammoDescription("Ammunition:\n" + player.getAmmoDescription(), font);
 	ammoDescription.setPosition(10, bounds.height - 150);
 	ammoDescription.setColor(sf::Color::White);
@@ -344,7 +340,7 @@ void Level2::drawHUD(sf::Font font, sf::FloatRect bounds, sf::RenderWindow &wind
 
 	player.drawShieldMeter(window);
 
-	if (waveCount <= 10) {
+	if (waveCount < 5) {
 		sf::Text wave("Wave " + to_string(waveCount), font);
 		wave.setPosition(bounds.width / 2 - wave.getLocalBounds().width / 2, 10);
 		wave.setColor(sf::Color::White);
@@ -352,19 +348,8 @@ void Level2::drawHUD(sf::Font font, sf::FloatRect bounds, sf::RenderWindow &wind
 		window.draw(wave);
 	}
 }
-
-void Level2::initPlayer(Player &player) {
-	points = 0;
-	player.setAlive(true);
-	player.setHealth(100);
-	player.setShieldCharge(200);
-	player.setPointMultiplier(1);
-	player.setPosition(player.getSpawnPoint());
-	player.setVelocity(sf::Vector2f(0, 0));
-	player.setAmmoDescription("Red Rays of Happiness");
-	player.setRateOfFire(0.2);
-}
-void Level2::drawPauseScreen(sf::RenderWindow &window) {
+//Draw the pause screen
+void Level1::drawPauseScreen(sf::RenderWindow &window) {
 	sf::Text paused("Paused", font);
 	sf::Text resume("Resume", font);
 	sf::Text exit("Exit", font);
@@ -397,11 +382,24 @@ void Level2::drawPauseScreen(sf::RenderWindow &window) {
 	window.draw(resume);
 	window.draw(exit);
 }
-void Level2::initLevel() {
-	this->view.reset(sf::FloatRect(0, 0, 1920, 1080));
-	currentLevel = 2;
+//Initialize/reset the player
+void Level1::initPlayer(Player &player) {
+	points = 0;
+	player.setAlive(true);
+	player.setHealth(100);
+	player.setShieldCharge(200);
+	player.setPointMultiplier(1);
+	player.setPosition(player.getSpawnPoint());
+	player.setVelocity(sf::Vector2f(0, 0));
+	player.setAmmoDescription("Red Rays of Happiness");
+	player.setRateOfFire(0.2);
+}
+//Initialize the level and load assets
+void Level1::initLevel() {
+	this->view.reset(sf::FloatRect(0, 0, sf::VideoMode::getDesktopMode().width, sf::VideoMode::getDesktopMode().height));
+	currentLevel = 1;
 
-	loader.loadMusic("assets/sounds/Phantom_From_Space.ogg");
+	loader.loadMusic("assets/sounds/Drums_of_the_Deep.ogg");
 	music.setVolume(musicVolume);
 	music.play();
 
@@ -410,18 +408,17 @@ void Level2::initLevel() {
 	heartbeat = loader.loadSound("assets/sounds/heartbeat.wav");
 	ding = loader.loadSound("assets/sounds/ding.wav");
 	clip = loader.loadSound("assets/sounds/clip.wav");
-
 	explosion.setVolume(10);
 	laser.setVolume(5);
 	heartbeat.setVolume(90);
 	ding.setVolume(10);
 
-	bgTex = loader.loadTexture("assets/pics/blue_space.jpg");
+	bgTex = loader.loadTexture("assets/pics/bg_space.jpg");
 	bgSprite.setTexture(bgTex);
 
 	font = loader.loadFont("assets/fonts/space_age.ttf");
 
-	explosionTex = loader.loadTexture("assets/pics/explosion.png");
+	explosionTex = loader.loadTexture("assets/pics/explosion_small.png");
 
 	cursorTex = loader.loadTexture("assets/pics/cursor.png");
 	cursorTex.setSmooth(true);
@@ -433,14 +430,10 @@ void Level2::initLevel() {
 	statusTimerIsOn = false;
 
 	enemySpawnInterval = 3;
-	waveInterval = 3;
+	waveInterval = 10;
 
-	int selection = 0;
-
-	if (this->isRunning != true) {
-		this->initPlayer(player);
-		this->waveCount = 1;
-	}
-
+	selection = 0;
+	
+	waveCount = 1;
 
 }

@@ -15,9 +15,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Source.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Player.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -51,66 +48,72 @@
     <ClCompile Include="Missile.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Player.h">
+    <ClInclude Include="include\Bullet.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Enemy.h">
+    <ClInclude Include="include\Drone.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Logics.h">
+    <ClInclude Include="include\Enemy.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="GameState.h">
+    <ClInclude Include="include\Explosion.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Loader.h">
+    <ClInclude Include="include\GameScreens.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Bullet.h">
+    <ClInclude Include="include\GameState.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Drone.h">
+    <ClInclude Include="include\Globals.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Marauder.h">
+    <ClInclude Include="include\Level1.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Powerups.h">
+    <ClInclude Include="include\Level2.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Screen.h">
+    <ClInclude Include="include\Loader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="MenuScreen.h">
+    <ClInclude Include="include\Logics.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Level1.h">
+    <ClInclude Include="include\Marauder.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="GameScreens.h">
+    <ClInclude Include="include\MenuScreen.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="OptionsScreen.h">
+    <ClInclude Include="include\Missile.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Globals.h">
+    <ClInclude Include="include\MissionsScreen.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="PointsScreen.h">
+    <ClInclude Include="include\OptionsScreen.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="MissionsScreen.h">
+    <ClInclude Include="include\Player.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Explosion.h">
+    <ClInclude Include="include\PointsScreen.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Missile.h">
+    <ClInclude Include="include\Powerups.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Level2.h">
+    <ClInclude Include="include\resources.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Screen.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -1,4 +1,4 @@
-#include "GameState.h"
+#include "include/GameState.h"
 
 //This is only used when pausing and unpausing the game.
 GameState::GameState() {

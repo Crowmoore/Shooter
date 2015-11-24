@@ -8,23 +8,29 @@ public:
 	OptionsScreen();
 	~OptionsScreen() {}
 	virtual int run(sf::RenderWindow &window);
-
+private:
 	sf::View view;
+	sf::Event event;
+	Loader loader;
+	sf::Sprite bgSprite;
+	sf::Font font;
+	sf::RectangleShape volumeMeterBlack;
+	sf::RectangleShape volumeMeterRed;
 };
 OptionsScreen::OptionsScreen() {
 }
 
 int OptionsScreen::run(sf::RenderWindow &window) {
-	sf::Event event;
-	this->view.reset(sf::FloatRect(0, 0, 1920, 1080));
-	Loader loader;
+	
+	this->view.reset(sf::FloatRect(0, 0, sf::VideoMode::getDesktopMode().width, sf::VideoMode::getDesktopMode().height));
+	
 	bool isWindowed = true;
 	bool isRunning = true;
 	sf::Texture bgTex(loader.loadTexture("assets/pics/outer_space.jpg"));
-	sf::Sprite bgSprite;
+	
 	bgSprite.setTexture(bgTex);
 	bgSprite.setPosition(0, 0);
-	sf::Font font(loader.loadFont("assets/fonts/space_age.ttf"));
+	font = loader.loadFont("assets/fonts/space_age.ttf");
 	sf::Text back("Back", font);
 	sf::Text display("Display", font);
 	sf::Text volume("Music volume", font);
@@ -50,8 +56,6 @@ int OptionsScreen::run(sf::RenderWindow &window) {
 	back.setCharacterSize(60);
 	back.setPosition(200, 500);
 
-		sf::RectangleShape volumeMeterBlack;
-	sf::RectangleShape volumeMeterRed;
 	volumeMeterBlack.setSize(sf::Vector2f(300, 40));
 	volumeMeterBlack.setPosition(1200, 320);
 	volumeMeterBlack.setOutlineThickness(1);

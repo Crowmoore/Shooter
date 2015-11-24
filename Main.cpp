@@ -1,6 +1,6 @@
 #include <SFML\Graphics.hpp>
 
-#include "GameScreens.h"
+#include "include/GameScreens.h"
 
 
 using namespace std;

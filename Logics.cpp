@@ -1,4 +1,4 @@
-#include "Logics.h"
+#include "include/Logics.h"
 
 Logics::Logics() {}
 Logics::~Logics() {}
@@ -64,8 +64,14 @@ void Logics::updateMissiles(sf::RenderWindow &window, Player &player, vector <Mi
 		missiles[j]->calculateRotation(window, player);
 		missiles[j]->setPosition(missiles[j]->getPosition() + sf::Vector2f(cos(missiles[j]->calculateRotation(window, player)) * missiles[j]->velocity.x, sin(missiles[j]->calculateRotation(window, player)) * missiles[j]->velocity.y));
 		missiles[j]->draw(window);
-		if (missiles[j]->getGlobalBounds().intersects(player.getGlobalBounds())) {
-			player.setHealth(player.getHealth() - missiles[j]->damage);
+		if (missiles[j]->getGlobalBounds().intersects(player.getGlobalBounds())) {			
+			if (player.getShielded() != true) {
+				player.setHealth(player.getHealth() - missiles[j]->damage);
+			}
+			else {
+				player.shield.setColor(sf::Color(255, 255, 255, 128));
+				window.draw(player.shield);
+			}
 			delete missiles[j];
 			missiles.erase(missiles.begin() + j);
 			break;
@@ -175,7 +181,7 @@ void Logics::updatePowerups(sf::RenderWindow &window, vector <Powerups *> &power
 		if (powerups[i]->getId() == "greenBullets" && powerups[i]->getGlobalBounds().intersects(player.getGlobalBounds())) {
 			ding.play();
 			player.setAmmoDescription("Green Beams of Hurting");
-			player.setDamage(20);
+			player.setDamage(30);
 			player.setRateOfFire(0.4);
 			delete powerups[i];
 			powerups.erase(powerups.begin() + i);

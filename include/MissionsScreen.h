@@ -8,20 +8,27 @@ public:
 	MissionsScreen();
 	~MissionsScreen() {}
 	virtual int run(sf::RenderWindow &window);
-
+private:
 	sf::View view;
+	sf::Event event;
+	Loader loader;
+	sf::Sprite bgSprite;
+	sf::Sprite mission1Spr;
+	sf::Sprite mission2Spr;
+	sf::RectangleShape missionBorder;
+	sf::Font font;
 };
 MissionsScreen::MissionsScreen() {
 }
 
 int MissionsScreen::run(sf::RenderWindow &window) {
-	sf::Event event;
-	this->view.reset(sf::FloatRect(0, 0, 1920, 1080));
-	Loader loader;
+	
+	this->view.reset(sf::FloatRect(0, 0, sf::VideoMode::getDesktopMode().width, sf::VideoMode::getDesktopMode().height));
+	
 	this->isRunning = true;
-	sf::Font font(loader.loadFont("assets/fonts/space_age.ttf"));
+	font = loader.loadFont("assets/fonts/space_age.ttf");
 	sf::Texture bgTex(loader.loadTexture("assets/pics/outer_space.jpg"));
-	sf::Sprite bgSprite;
+	
 	bgSprite.setTexture(bgTex);
 	bgSprite.setPosition(0, 0);
 
@@ -42,10 +49,10 @@ int MissionsScreen::run(sf::RenderWindow &window) {
 	mission1Description.setCharacterSize(35);
 	mission1Description.setPosition(view.getSize().x / 2 - mission1Description.getLocalBounds().width / 2, 700);
 	sf::Texture mission1Tex(loader.loadTexture("assets/pics/bg_space.jpg"));
-	sf::Sprite mission1Spr;
+	
 	mission1Spr.setTexture(mission1Tex);
 	mission1Spr.setScale(0.2, 0.2);
-	sf::RectangleShape missionBorder;
+	
 	missionBorder.setSize(sf::Vector2f(392, 248));
 
 	sf::Text mission2("Stop the resource gathering", font);
@@ -55,7 +62,7 @@ int MissionsScreen::run(sf::RenderWindow &window) {
 	mission2Description.setCharacterSize(35);
 	mission2Description.setPosition(view.getSize().x / 2 - mission1Description.getLocalBounds().width / 2, 700);
 	sf::Texture mission2Tex(loader.loadTexture("assets/pics/blue_space.jpg"));
-	sf::Sprite mission2Spr;
+	
 	mission2Spr.setTexture(mission2Tex);
 	mission2Spr.setScale(0.2, 0.2);
 
@@ -64,11 +71,11 @@ int MissionsScreen::run(sf::RenderWindow &window) {
 	back.setRotation(-90);
 	back.setPosition(view.getSize().x / 4, 550);
 
-	sf::CircleShape forward(40, 3);
-	
+	sf::CircleShape forward(40, 3);	
 	forward.setRotation(90);
 	forward.setPosition(view.getSize().x / 4 + view.getSize().x / 2, 470);
 	forward.setFillColor(sf::Color::White);
+
 	int selection = 0;
 
 	while (this->isRunning) {
