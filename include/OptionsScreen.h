@@ -48,21 +48,21 @@ int OptionsScreen::run(sf::RenderWindow &window) {
 	display.setPosition(200, 400);
 
 	windowed.setCharacterSize(60);
-	windowed.setPosition(1200, 400);
+	windowed.setPosition(900, 400);
 
 	fullscreen.setCharacterSize(60);
-	fullscreen.setPosition(1200, 400);
+	fullscreen.setPosition(900, 400);
 
 	back.setCharacterSize(60);
 	back.setPosition(200, 500);
 
 	volumeMeterBlack.setSize(sf::Vector2f(300, 40));
-	volumeMeterBlack.setPosition(1200, 320);
+	volumeMeterBlack.setPosition(900, 320);
 	volumeMeterBlack.setOutlineThickness(1);
 	volumeMeterBlack.setOutlineColor(sf::Color::White);
 	volumeMeterBlack.setFillColor(sf::Color::Black);
 
-	volumeMeterRed.setPosition(1200, 320);
+	volumeMeterRed.setPosition(900, 320);
 	volumeMeterRed.setOutlineThickness(1);
 	volumeMeterRed.setOutlineColor(sf::Color::White);
 	volumeMeterRed.setFillColor(sf::Color::Red);

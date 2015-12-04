@@ -24,7 +24,6 @@ public:
 	void activateShield(sf::RenderWindow &);
 	void checkHealth(sf::Sound &);
 	void animate();
-	void drawShieldMeter(sf::RenderWindow &);
 	string getAmmoDescription();
 	void setAmmoDescription(string);
 	int getHealth();
@@ -48,8 +47,6 @@ public:
 	int getPointMultiplier();
 	void setPointMultiplier(int);
 
-	sf::RectangleShape shieldMeterBlue;
-	sf::RectangleShape shieldMeterBlack;
 	sf::Sprite shield;
 	
 private:
@@ -70,4 +67,5 @@ private:
 	sf::Texture shieldTex;
 	sf::Texture tex;
 	sf::Sound heartbeat;
+	sf::FloatRect bounds;
 };

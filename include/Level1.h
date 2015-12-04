@@ -35,6 +35,8 @@ private:
 	sf::Texture cursorTex;
 	sf::Sprite bgSprite;
 	sf::Sprite cursor;
+	sf::RectangleShape shieldMeterBlue;
+	sf::RectangleShape shieldMeterBlack;
 	sf::Clock enemySpawnTimer;
 	sf::Clock waveTimer;
 	sf::Clock fireRateTimer;
@@ -56,7 +58,8 @@ private:
 Level1::Level1() {}
 
 int Level1::run(sf::RenderWindow &window) {	
-
+	waveTimer.restart();
+	enemySpawnTimer.restart();
 	initLevel();
 	initPlayer(player);
 	window.setFramerateLimit(60);
@@ -338,7 +341,21 @@ void Level1::drawHUD(sf::Font font, sf::FloatRect bounds, sf::RenderWindow &wind
 	shieldCharge.setColor(sf::Color::White);
 	window.draw(shieldCharge);
 
-	player.drawShieldMeter(window);
+	//This was originally done in the player class but due to the problems it caused with different resolutions I decided to move it here.
+	this->shieldMeterBlack.setSize(sf::Vector2f(200, 20));
+	this->shieldMeterBlack.setPosition(350, this->bounds.height - 190);
+	this->shieldMeterBlack.setOutlineThickness(1);
+	this->shieldMeterBlack.setOutlineColor(sf::Color::White);
+	this->shieldMeterBlack.setFillColor(sf::Color::Black);
+
+	this->shieldMeterBlue.setPosition(350, this->bounds.height - 190);
+	this->shieldMeterBlue.setOutlineThickness(1);
+	this->shieldMeterBlue.setOutlineColor(sf::Color::White);
+	this->shieldMeterBlue.setFillColor(sf::Color(51, 153, 255, 255));
+
+	this->shieldMeterBlue.setSize(sf::Vector2f(player.getShieldCharge(), 20));
+	window.draw(this->shieldMeterBlack);
+	window.draw(this->shieldMeterBlue);
 
 	if (waveCount < 5) {
 		sf::Text wave("Wave " + to_string(waveCount), font);

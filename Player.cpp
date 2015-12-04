@@ -12,17 +12,6 @@ Player::Player() {
 	this->setTextureRect(sf::IntRect(0, 0, 170, 222));
 	this->setOrigin(this->getLocalBounds().width / 2, this->getLocalBounds().height / 2);
 	this->setScale(sf::Vector2f(0.3, 0.3));
-
-	this->shieldMeterBlack.setSize(sf::Vector2f(200, 20));
-	this->shieldMeterBlack.setPosition(350, 1010);
-	this->shieldMeterBlack.setOutlineThickness(1);
-	this->shieldMeterBlack.setOutlineColor(sf::Color::White);
-	this->shieldMeterBlack.setFillColor(sf::Color::Black);
-	
-	this->shieldMeterBlue.setPosition(350, 1010);
-	this->shieldMeterBlue.setOutlineThickness(1);
-	this->shieldMeterBlue.setOutlineColor(sf::Color::White);
-	this->shieldMeterBlue.setFillColor(sf::Color(51, 153, 255, 255));
 	
 	this->shieldTex = loader.loadTexture("assets/pics/shield.png");
 	this->shieldTex.setSmooth(true);
@@ -70,13 +59,6 @@ void Player::lookAtCursor(sf::RenderWindow &window, sf::View &view) {
 	float rotation = (atan2(dy, dx)) * 180.0 / pi;
 
 	this->setRotation(rotation + 90);
-}
-//Draw the meter that shows the shield charge.
-void Player::drawShieldMeter(sf::RenderWindow &window) {
-	this->shieldMeterBlue.setSize(sf::Vector2f(this->getShieldCharge(), 20));
-	window.draw(this->shieldMeterBlack);
-	window.draw(this->shieldMeterBlue);
-	
 }
 //Prevent the player from exceeding the maximum velocity.
 void Player::adjustVelocity() {
@@ -179,7 +161,7 @@ void Player::checkBounds(Player &player, sf::FloatRect bounds) {
 	if (player.getPosition().y < bounds.top + player.getOrigin().x || player.getPosition().y > bounds.height - player.getOrigin().x) {
 		player.velocity.y = 0;
 	}
-	else if (player.getPosition().x > bounds.width - player.getOrigin().x || player.getPosition().x < bounds.left + player.getOrigin().x) {
+	if (player.getPosition().x > bounds.width - player.getOrigin().x || player.getPosition().x < bounds.left + player.getOrigin().x) {
 		player.velocity.x = 0;
 	}
 }
